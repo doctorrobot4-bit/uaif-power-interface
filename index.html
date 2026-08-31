@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Totalcom – Enterprise & Digital Solutions</title>
+    <title>Jace Enterprise – Next-Gen Cloud & Infrastructure</title>
     <style>
         :root {
-            --primary-blue: #023e8a;
-            --secondary-blue: #0077b6;
-            --accent-green: #008751;
-            --accent-dark-green: #004d2e;
-            --accent-yellow: #ffcc00;
+            --brand-navy: #0b192c;
+            --brand-blue: #1e3e62;
+            --brand-accent: #008751;
+            --brand-highlight: #ffcc00;
             --bg-light: #f8fafc;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -32,40 +31,40 @@
             line-height: 1.6;
         }
 
-        /* Top Announcement / Utility Bar */
+        /* Top Utility Bar */
         .top-bar {
-            background-color: #0f172a;
+            background-color: var(--brand-navy);
             color: #cbd5e1;
             font-size: 13px;
-            padding: 8px 50px;
+            padding: 10px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .top-bar-info span {
-            margin-right: 20px;
+            margin-right: 25px;
         }
 
         .top-bar-links a {
             color: #cbd5e1;
             text-decoration: none;
-            margin-left: 15px;
+            margin-left: 20px;
             transition: color 0.2s;
         }
 
         .top-bar-links a:hover {
-            color: var(--accent-yellow);
+            color: var(--brand-highlight);
         }
 
-        /* Top Navbar */
+        /* Navigation Header */
         header {
             background-color: #ffffff;
-            border-bottom: 3px solid var(--accent-yellow);
+            border-bottom: 3px solid var(--brand-highlight);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 50px;
+            padding: 18px 50px;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -73,7 +72,7 @@
         }
 
         .logo-area span {
-            color: var(--primary-blue);
+            color: var(--brand-navy);
             font-weight: 800;
             font-size: 24px;
             letter-spacing: -0.5px;
@@ -84,7 +83,7 @@
         nav ul {
             list-style: none;
             display: flex;
-            gap: 28px;
+            gap: 30px;
             align-items: center;
         }
 
@@ -97,11 +96,11 @@
         }
 
         nav a:hover {
-            color: var(--accent-green);
+            color: var(--brand-accent);
         }
 
         .lang-btn {
-            background: var(--accent-green);
+            background: var(--brand-accent);
             color: white;
             border: none;
             padding: 8px 18px;
@@ -113,15 +112,15 @@
         }
 
         .lang-btn:hover {
-            background: var(--accent-dark-green);
+            background: #004d2e;
         }
 
-        /* Expanded Hero Section */
+        /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, rgba(2, 62, 138, 0.95) 0%, rgba(0, 135, 81, 0.9) 100%), 
-                        url('https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover;
+            background: linear-gradient(135deg, rgba(11, 25, 44, 0.95) 0%, rgba(30, 62, 98, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover;
             color: white;
-            padding: 120px 50px;
+            padding: 130px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -130,24 +129,24 @@
         }
 
         .hero-content {
-            max-width: 700px;
+            max-width: 720px;
             z-index: 2;
         }
 
         .hero-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(5px);
-            padding: 6px 14px;
+            backdrop-filter: blur(6px);
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .hero-content h1 {
-            font-size: 58px;
+            font-size: 60px;
             font-weight: 800;
             margin: 0 0 20px 0;
             line-height: 1.1;
@@ -163,14 +162,14 @@
 
         .hero-buttons {
             display: flex;
-            gap: 15px;
+            gap: 16px;
         }
 
         .btn-primary {
-            background: var(--accent-yellow);
+            background: var(--brand-highlight);
             color: #0f172a;
             border: none;
-            padding: 15px 34px;
+            padding: 15px 36px;
             font-size: 16px;
             font-weight: 700;
             border-radius: 30px;
@@ -189,7 +188,7 @@
             background: transparent;
             border: 2px solid white;
             color: white;
-            padding: 15px 34px;
+            padding: 15px 36px;
             font-size: 16px;
             font-weight: 700;
             border-radius: 30px;
@@ -200,11 +199,11 @@
 
         .btn-secondary:hover {
             background: white;
-            color: var(--primary-blue);
+            color: var(--brand-navy);
             transform: translateY(-2px);
         }
 
-        /* Statistics Highlight Panel */
+        /* Metrics Bar */
         .stats-section {
             background-color: var(--bg-light);
             padding: 50px 20px;
@@ -221,10 +220,10 @@
         }
 
         .stat-item h3 {
-            font-size: 38px;
-            color: var(--primary-blue);
+            font-size: 40px;
+            color: var(--brand-navy);
             font-weight: 800;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .stat-item p {
@@ -235,11 +234,11 @@
             letter-spacing: 0.5px;
         }
 
-        /* Main Content Containers */
+        /* Container Layouts */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 90px 20px;
+            padding: 100px 20px;
         }
 
         .section-header {
@@ -249,11 +248,11 @@
         }
 
         .section-header h2 {
-            color: var(--primary-blue);
-            font-size: 34px;
+            color: var(--brand-navy);
+            font-size: 36px;
             font-weight: 800;
             letter-spacing: -0.5px;
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         .section-header p {
@@ -262,7 +261,7 @@
             line-height: 1.6;
         }
 
-        /* Cards Grid Layout */
+        /* Cards Grid */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -327,8 +326,8 @@
 
         .btn-card {
             background: transparent;
-            border: 2px solid var(--primary-blue);
-            color: var(--primary-blue);
+            border: 2px solid var(--brand-navy);
+            color: var(--brand-navy);
             padding: 11px 28px;
             border-radius: 25px;
             font-weight: 700;
@@ -341,11 +340,11 @@
         }
 
         .btn-card:hover {
-            background: var(--primary-blue);
+            background: var(--brand-navy);
             color: white;
         }
 
-        /* Features Section */
+        /* Features Grid */
         .features-section {
             background-color: var(--bg-light);
             padding: 100px 20px;
@@ -368,15 +367,15 @@
         }
 
         .feature-card:hover {
-            border-color: var(--secondary-blue);
-            box-shadow: 0 10px 25px rgba(2, 62, 138, 0.05);
+            border-color: var(--brand-blue);
+            box-shadow: 0 10px 25px rgba(11, 25, 44, 0.05);
         }
 
         .feature-icon {
             width: 50px;
             height: 50px;
-            background: rgba(2, 62, 138, 0.1);
-            color: var(--primary-blue);
+            background: rgba(11, 25, 44, 0.08);
+            color: var(--brand-navy);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -400,7 +399,7 @@
             margin: 0;
         }
 
-        /* Comprehensive Footer */
+        /* Professional Footer */
         footer {
             background-color: #0b1120;
             color: #94a3b8;
@@ -417,7 +416,7 @@
         }
 
         .footer-col h4 {
-            color: var(--accent-yellow);
+            color: var(--brand-highlight);
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -464,7 +463,7 @@
                 padding-right: 20px;
             }
             .hero-content h1 {
-                font-size: 40px;
+                font-size: 42px;
             }
             .hero {
                 padding: 80px 20px;
@@ -476,8 +475,8 @@
 
     <div class="top-bar">
         <div class="top-bar-info">
-            <span>📞 24/7 Enterprise Support: +1 (800) 555-TOTAL</span>
-            <span>✉️ enterprise@totalcom.net</span>
+            <span>📞 24/7 Enterprise Support: +1 (888) 425-JACE</span>
+            <span>✉️ support@jace-enterprise.com</span>
         </div>
         <div class="top-bar-links">
             <a href="#">System Status</a>
@@ -488,7 +487,7 @@
 
     <header>
         <div class="logo-area">
-            <span>Totalcom<br><strong style="color:var(--accent-green);">Enterprise</strong></span>
+            <span>Jace Enterprise<br><strong style="color:var(--brand-accent);">Technologies</strong></span>
         </div>
         <nav>
             <ul>
@@ -505,9 +504,9 @@
 
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge">🚀 Next-Generation Digital Ecosystem</div>
-            <h1>Next-Gen Digital Connectivity</h1>
-            <p>Empowering global enterprises and communities with ultra-reliable communication infrastructure, high-speed secure fiber networks, and scalable cloud integrations.</p>
+            <div class="hero-badge">🚀 Next-Generation Digital Solutions</div>
+            <h1>Smart Enterprise Infrastructure</h1>
+            <p>Empowering global enterprises and high-growth organizations with ultra-reliable cloud architecture, scalable distributed data centers, and advanced digital integration.</p>
             <div class="hero-buttons">
                 <a href="#" class="btn-primary">Explore Solutions</a>
                 <a href="#" class="btn-secondary">Client Login</a>
@@ -519,37 +518,37 @@
         <div class="stats-grid">
             <div class="stat-item">
                 <h3>99.99%</h3>
-                <p>Network Uptime</p>
+                <p>Platform Uptime</p>
             </div>
             <div class="stat-item">
-                <h3>+15M</h3>
-                <p>Connected Users</p>
+                <h3>+25M</h3>
+                <p>Global Transactions</p>
             </div>
             <div class="stat-item">
-                <h3>+1,200</h3>
-                <p>Enterprise Partners</p>
+                <h3>+1,500</h3>
+                <p>Enterprise Clients</p>
             </div>
             <div class="stat-item">
                 <h3>24 / 7</h3>
-                <p>Dedicated Support</p>
+                <p>Global Engineering Support</p>
             </div>
         </div>
     </section>
 
     <div class="container">
         <div class="section-header">
-            <h2>Totalcom Core Services</h2>
-            <p>Discover our comprehensive suite of advanced enterprise infrastructure products designed to accelerate digital transformation and operational scale.</p>
+            <h2>Jace Core Services & Architecture</h2>
+            <p>Explore our comprehensive suite of advanced enterprise infrastructure products designed to accelerate digital transformation and operational scale.</p>
         </div>
 
         <div class="cards-grid">
             <div class="card">
                 <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=800" alt="Enterprise Connectivity" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=800" alt="Cloud Infrastructure" class="card-img">
                 </div>
                 <div class="card-body">
-                    <h3>Enterprise Connectivity</h3>
-                    <p>High-speed, dedicated symmetrical fiber and advanced wireless data channels meticulously customized for high-volume enterprise demands and low latency.</p>
+                    <h3>Advanced Cloud Infrastructure</h3>
+                    <p>High-performance distributed virtual computing nodes and dedicated multi-cloud storage arrays meticulously customized for enterprise demands.</p>
                 </div>
                 <div class="card-footer">
                     <button class="btn-card">Learn More →</button>
@@ -558,11 +557,11 @@
 
             <div class="card">
                 <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" alt="Secure Cloud Solutions" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" alt="Secure Data Analytics" class="card-img">
                 </div>
                 <div class="card-body">
-                    <h3>Secure Cloud Solutions</h3>
-                    <p>Scalable storage arrays, high-performance distributed computing nodes, and military-grade cloud security architectures built for modern enterprise workflows.</p>
+                    <h3>Secure Data Analytics</h3>
+                    <p>Real-time data streaming engines, automated business intelligence reporting, and military-grade encryption architectures for sensitive enterprise data.</p>
                 </div>
                 <div class="card-footer">
                     <button class="btn-card">Learn More →</button>
@@ -571,11 +570,11 @@
 
             <div class="card">
                 <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800" alt="Smart Infrastructure" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=800" alt="Automated Operations" class="card-img">
                 </div>
                 <div class="card-body">
-                    <h3>Smart Infrastructure</h3>
-                    <p>Integrated automation software and industrial IoT tools designed to optimize energy efficiency, remote telemetry, and real-time operational control.</p>
+                    <h3>Automated Operations</h3>
+                    <p>Industrial IoT and AI-driven automation software designed to optimize system workflows, remote telemetry, and infrastructure maintenance.</p>
                 </div>
                 <div class="card-footer">
                     <button class="btn-card">Learn More →</button>
@@ -586,29 +585,29 @@
 
     <section class="features-section">
         <div class="section-header" style="margin-bottom: 50px;">
-            <h2>Why Industry Leaders Choose Totalcom</h2>
+            <h2>Why Industry Leaders Choose Jace</h2>
             <p>Engineered from the ground up to offer maximum resilience, transparency, and seamless execution.</p>
         </div>
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon">⚡</div>
                 <h4>Ultra-Low Latency</h4>
-                <p>Optimized packet routing paths ensuring near-instantaneous data transfer times across international branches.</p>
+                <p>Optimized packet routing paths ensuring near-instantaneous transaction speeds across global branch networks.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🛡️</div>
-                <h4>Advanced Security</h4>
-                <p>Multi-layered cyber protection frameworks featuring automatic DDoS mitigation and end-to-end encryption.</p>
+                <h4>Enterprise Security</h4>
+                <p>Multi-layered cyber protection frameworks featuring proactive DDoS mitigation and zero-trust permissions.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">📈</div>
                 <h4>Infinite Scalability</h4>
-                <p>Dynamic bandwidth provisioning allowing your network resources to grow alongside your business demands.</p>
+                <p>Dynamic resource allocation allowing your data processing power to grow seamlessly alongside your organization.</p>
             </div>
             <div class="feature-card">
                 <div class="feature-icon">🌐</div>
-                <h4>Global Coverage</h4>
-                <p>Robust peering agreements and regional data centers ensuring uninterrupted uptime worldwide.</p>
+                <h4>Global Edge Network</h4>
+                <p>Robust international peering agreements ensuring uninterrupted availability and local edge routing.</p>
             </div>
         </div>
     </section>
@@ -619,7 +618,7 @@
                 <h4>Getting Started</h4>
                 <ul>
                     <li><a href="#">Client Portal Access</a></li>
-                    <li><a href="#">Network Coverage Map</a></li>
+                    <li><a href="#">Global Coverage Map</a></li>
                     <li><a href="#">Service Activation Guide</a></li>
                     <li><a href="#">Pricing Calculator</a></li>
                 </ul>
@@ -627,10 +626,10 @@
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul>
-                    <li><a href="#">Dedicated Internet Access</a></li>
-                    <li><a href="#">Virtual Private Networks</a></li>
-                    <li><a href="#">Data Center Hosting</a></li>
-                    <li><a href="#">Managed Security Services</a></li>
+                    <li><a href="#">Cloud Compute Nodes</a></li>
+                    <li><a href="#">Enterprise Storage</a></li>
+                    <li><a href="#">Managed Data Pipelines</a></li>
+                    <li><a href="#">Security Frameworks</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -645,7 +644,7 @@
             <div class="footer-col">
                 <h4>Company Info</h4>
                 <ul>
-                    <li><a href="#">About Totalcom</a></li>
+                    <li><a href="#">About Jace Technologies</a></li>
                     <li><a href="#">Careers & Openings</a></li>
                     <li><a href="#">Press & Media Kit</a></li>
                     <li><a href="#">Investor Relations</a></li>
@@ -653,8 +652,8 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Global Hotline: +1 (800) 555-TOTAL &nbsp;&nbsp;|&nbsp;&nbsp; contact@totalcom.net</p>
-            <p>&copy; 2026 Totalcom Inc. All Rights Reserved.</p>
+            <p>Global Hotline: +1 (888) 425-JACE &nbsp;&nbsp;|&nbsp;&nbsp; support@jace-enterprise.com</p>
+            <p>&copy; 2026 Jace Technologies Inc. All Rights Reserved.</p>
         </div>
     </footer>
 
