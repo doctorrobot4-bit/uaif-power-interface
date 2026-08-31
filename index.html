@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>telebirr – Ethio telecom</title>
+    <title>Totalcom – Enterprise & Digital Solutions</title>
     <style>
         :root {
             --primary-blue: #023e8a;
-            --telebirr-green: #008751;
-            --telebirr-dark-green: #004d2e;
-            --telebirr-yellow: #ffcc00;
+            --accent-green: #008751;
+            --accent-yellow: #ffcc00;
             --bg-light: #f8fafc;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -30,7 +29,7 @@
         /* Top Navbar */
         header {
             background-color: #ffffff;
-            border-bottom: 3px solid var(--telebirr-yellow);
+            border-bottom: 3px solid var(--accent-yellow);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -44,7 +43,7 @@
         .logo-area span {
             color: var(--primary-blue);
             font-weight: 800;
-            font-size: 21px;
+            font-size: 22px;
             letter-spacing: -0.5px;
             line-height: 1.1;
             display: inline-block;
@@ -68,11 +67,11 @@
         }
 
         nav a:hover {
-            color: var(--telebirr-green);
+            color: var(--accent-green);
         }
 
         .lang-btn {
-            background: var(--telebirr-green);
+            background: var(--accent-green);
             color: white;
             border: none;
             padding: 7px 16px;
@@ -84,12 +83,12 @@
         }
 
         .lang-btn:hover {
-            background: var(--telebirr-dark-green);
+            background: #004d2e;
         }
 
-        /* Hero Section with High-Impact Gradient & Image Overlay */
+        /* Hero Section */
         .hero {
-            background: linear-gradient(90deg, rgba(0, 135, 81, 0.96) 0%, rgba(0, 77, 46, 0.85) 65%), 
+            background: linear-gradient(90deg, rgba(2, 62, 138, 0.95) 0%, rgba(0, 135, 81, 0.85) 100%), 
                         url('https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=1200') no-repeat center center/cover;
             color: white;
             padding: 90px 50px;
@@ -103,7 +102,7 @@
         }
 
         .hero-content h1 {
-            font-size: 54px;
+            font-size: 52px;
             font-weight: 800;
             margin: 0 0 20px 0;
             line-height: 1.1;
@@ -131,7 +130,7 @@
 
         .btn-read-more:hover {
             background: white;
-            color: var(--telebirr-green);
+            color: var(--primary-blue);
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         }
 
@@ -143,7 +142,7 @@
         }
 
         h2.section-title {
-            color: var(--telebirr-green);
+            color: var(--primary-blue);
             font-size: 26px;
             margin-bottom: 35px;
             text-transform: capitalize;
@@ -151,7 +150,7 @@
             letter-spacing: -0.5px;
         }
 
-        /* Dynamic Grid Structure */
+        /* Cards Grid */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -206,8 +205,8 @@
 
         .btn-card {
             background: transparent;
-            border: 1.5px solid var(--telebirr-green);
-            color: var(--telebirr-green);
+            border: 1.5px solid var(--primary-blue);
+            color: var(--primary-blue);
             padding: 10px 26px;
             border-radius: 20px;
             font-weight: 600;
@@ -217,50 +216,11 @@
         }
 
         .btn-card:hover {
-            background: var(--telebirr-green);
+            background: var(--primary-blue);
             color: white;
         }
 
-        /* Statistics Metrics Panel */
-        .stats-section {
-            background-color: var(--bg-light);
-            padding: 70px 20px;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .stats-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 24px;
-        }
-
-        .stat-box {
-            background: white;
-            padding: 30px 20px;
-            border-radius: 14px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.03);
-            border: 1px solid #f1f5f9;
-        }
-
-        .stat-box h3 {
-            color: var(--telebirr-green);
-            font-size: 28px;
-            margin: 0 0 8px 0;
-            font-weight: 800;
-        }
-
-        .stat-box p {
-            color: var(--text-muted);
-            font-size: 13px;
-            margin: 0;
-            font-weight: 600;
-        }
-
-        /* Professional Footer Elements */
+        /* Footer */
         footer {
             background-color: #0f172a;
             color: #94a3b8;
@@ -277,7 +237,7 @@
         }
 
         .footer-col h4 {
-            color: var(--telebirr-green);
+            color: var(--accent-yellow);
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1.2px;
@@ -322,16 +282,16 @@
 
     <header>
         <div class="logo-area">
-            <span>ethio telecom<br><strong style="color:var(--telebirr-green);">telebirr</strong></span>
+            <span>Totalcom<br><strong style="color:var(--accent-green);">Enterprise</strong></span>
         </div>
         <nav>
             <ul>
-                <li><a href="#">Services ▾</a></li>
-                <li><a href="#">Financial Services ▾</a></li>
-                <li><a href="#">Price</a></li>
-                <li><a href="#">Developer Portal</a></li>
-                <li><a href="#">Getting Started ▾</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Solutions ▾</a></li>
+                <li><a href="#">Cloud & Infra ▾</a></li>
+                <li><a href="#">Pricing</a></li>
+                <li><a href="#">Developers</a></li>
+                <li><a href="#">Company ▾</a></li>
+                <li><a href="#">Contact</a></li>
                 <li><button class="lang-btn">Eng</button></li>
             </ul>
         </nav>
@@ -339,132 +299,90 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Ultra-Fast Charging</h1>
-            <p>We Power Ethiopia's EV Future with Ultra-Fast Charging. Driving Ethiopia's Digital and Green Transformation</p>
-            <button class="btn-read-more">Read More</button>
+            <h1>Next-Gen Digital Connectivity</h1>
+            <p>Empowering businesses and communities with high-performance communication infrastructure, secure networks, and smart digital integration.</p>
+            <button class="btn-read-more">Explore Solutions</button>
         </div>
     </section>
 
     <div class="container">
-        <h2 class="section-title">telebirr services</h2>
+        <h2 class="section-title">Totalcom Core Services</h2>
         <div class="cards-grid">
             
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80&w=600" alt="Bulk Payment" class="card-img">
+                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=600" alt="Enterprise Connectivity" class="card-img">
                 <div class="card-body">
-                    <h3>Bulk Payment</h3>
-                    <p>Easily pay employees salary or other bulk payments on the go 24/7.</p>
+                    <h3>Enterprise Connectivity</h3>
+                    <p>High-speed, dedicated fiber and wireless data channels customized for high-volume enterprise demands.</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn-card">Read More</button>
+                    <button class="btn-card">Learn More</button>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb9?auto=format&fit=crop&q=80&w=600" alt="Donate / Fundraising" class="card-img">
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=600" alt="Secure Cloud Solutions" class="card-img">
                 <div class="card-body">
-                    <h3>Donate/Fundraising</h3>
-                    <p>Donate for GERD and other fundraising activities seamlessly.</p>
+                    <h3>Secure Cloud Solutions</h3>
+                    <p>Scalable storage, distributed computing, and robust cloud security architectures built for modern workflows.</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn-card">Read More</button>
+                    <button class="btn-card">Learn More</button>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1556742049-0a67d554c2ec?auto=format&fit=crop&q=80&w=600" alt="Withdraw Cash" class="card-img">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=600" alt="Smart Infrastructure" class="card-img">
                 <div class="card-body">
-                    <h3>Withdraw Cash</h3>
-                    <p>Withdraw cash anywhere from your telebirr account at the nearby telebirr agent or Ethio telecom shop.</p>
+                    <h3>Smart Infrastructure</h3>
+                    <p>Integrated automation and IoT tools designed to optimize energy efficiency and remote operational control.</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn-card">Read More</button>
+                    <button class="btn-card">Learn More</button>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <section class="stats-section">
-        <h2 class="section-title" style="text-align: center; margin-bottom: 40px;">telebirr Statistics</h2>
-        <div class="stats-grid">
-            <div class="stat-box">
-                <h3>+9.13Tn</h3>
-                <p>Transaction Value (ETB)</p>
-            </div>
-            <div class="stat-box">
-                <h3>+60.59M</h3>
-                <p>Total Customers</p>
-            </div>
-            <div class="stat-box">
-                <h3>+410K</h3>
-                <p>Agents</p>
-            </div>
-            <div class="stat-box">
-                <h3>+440K</h3>
-                <p>Merchants</p>
-            </div>
-            <div class="stat-box">
-                <h3>31 Banks</h3>
-                <p>Banks to telebirr</p>
-            </div>
-            <div class="stat-box">
-                <h3>2</h3>
-                <p>MFIs</p>
-            </div>
-        </div>
-    </section>
-
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>Getting Started</h4>
                 <ul>
-                    <li><a href="#">Download telebirr Apps</a></li>
-                    <li><a href="#">Requirements to Register</a></li>
-                    <li><a href="#">How to Register</a></li>
+                    <li><a href="#">Client Portal</a></li>
+                    <li><a href="#">Network Coverage</a></li>
+                    <li><a href="#">Service Activation</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Services</h4>
+                <h4>Solutions</h4>
                 <ul>
-                    <li><a href="#">Deposit | Cash-In</a></li>
-                    <li><a href="#">Withdrawal | Cash-Out</a></li>
-                    <li><a href="#">Buy Airtime</a></li>
-                    <li><a href="#">Ethio Bill Payment</a></li>
+                    <li><a href="#">Dedicated Internet</a></li>
+                    <li><a href="#">Private Networks</a></li>
+                    <li><a href="#">Data Center Hosting</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Financial Services</h4>
+                <h4>Support</h4>
                 <ul>
-                    <li><a href="#">CBE Services</a></li>
-                    <li><a href="#">Dashen Bank</a></li>
-                    <li><a href="#">Siinqee Bank</a></li>
-                    <li><a href="#">Awash Bank</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Customer Service</h4>
-                <ul>
-                    <li><a href="#">Bill Payment Options</a></li>
-                    <li><a href="#">Online Service Request</a></li>
-                    <li><a href="#">Ethio e-CARE Service</a></li>
-                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">System Status</a></li>
+                    <li><a href="#">API Documentation</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="#">CSR</a></li>
-                    <li><a href="#">Vacancy</a></li>
-                    <li><a href="#">Tender</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press Releases</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>+251-127 &nbsp;&nbsp;|&nbsp;&nbsp; 126 &nbsp;&nbsp;|&nbsp;&nbsp; telebirr@ethionet.et</p>
-            <p>&copy; Ethio telecom. All Rights Reserved.</p>
+            <p>Support: +1 (800) 555-TOTAL &nbsp;&nbsp;|&nbsp;&nbsp; contact@totalcom.net</p>
+            <p>&copy; Totalcom Inc. All Rights Reserved.</p>
         </div>
     </footer>
 
