@@ -7,23 +7,55 @@
     <style>
         :root {
             --primary-blue: #023e8a;
+            --secondary-blue: #0077b6;
             --accent-green: #008751;
+            --accent-dark-green: #004d2e;
             --accent-yellow: #ffcc00;
             --bg-light: #f8fafc;
             --text-main: #1e293b;
             --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             color: var(--text-main);
             background-color: #ffffff;
             -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+        }
+
+        /* Top Announcement / Utility Bar */
+        .top-bar {
+            background-color: #0f172a;
+            color: #cbd5e1;
+            font-size: 13px;
+            padding: 8px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-info span {
+            margin-right: 20px;
+        }
+
+        .top-bar-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 15px;
+            transition: color 0.2s;
+        }
+
+        .top-bar-links a:hover {
+            color: var(--accent-yellow);
         }
 
         /* Top Navbar */
@@ -33,17 +65,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 50px;
+            padding: 16px 50px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
 
         .logo-area span {
             color: var(--primary-blue);
             font-weight: 800;
-            font-size: 22px;
+            font-size: 24px;
             letter-spacing: -0.5px;
             line-height: 1.1;
             display: inline-block;
@@ -53,15 +85,13 @@
             list-style: none;
             display: flex;
             gap: 28px;
-            margin: 0;
-            padding: 0;
             align-items: center;
         }
 
         nav a {
             text-decoration: none;
             color: #334155;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 14px;
             transition: color 0.2s ease;
         }
@@ -74,145 +104,240 @@
             background: var(--accent-green);
             color: white;
             border: none;
-            padding: 7px 16px;
+            padding: 8px 18px;
             border-radius: 6px;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: var(--transition-smooth);
         }
 
         .lang-btn:hover {
-            background: #004d2e;
+            background: var(--accent-dark-green);
         }
 
-        /* Hero Section */
+        /* Expanded Hero Section */
         .hero {
-            background: linear-gradient(90deg, rgba(2, 62, 138, 0.95) 0%, rgba(0, 135, 81, 0.85) 100%), 
-                        url('https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=1200') no-repeat center center/cover;
+            background: linear-gradient(135deg, rgba(2, 62, 138, 0.95) 0%, rgba(0, 135, 81, 0.9) 100%), 
+                        url('https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover;
             color: white;
-            padding: 90px 50px;
+            padding: 120px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .hero-content {
-            max-width: 650px;
+            max-width: 700px;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .hero-content h1 {
-            font-size: 52px;
+            font-size: 58px;
             font-weight: 800;
             margin: 0 0 20px 0;
             line-height: 1.1;
-            letter-spacing: -1px;
+            letter-spacing: -1.5px;
         }
 
         .hero-content p {
-            font-size: 18px;
-            margin: 0 0 35px 0;
+            font-size: 19px;
+            margin: 0 0 40px 0;
             opacity: 0.95;
             line-height: 1.6;
         }
 
-        .btn-read-more {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-            padding: 14px 32px;
-            font-size: 15px;
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-primary {
+            background: var(--accent-yellow);
+            color: #0f172a;
+            border: none;
+            padding: 15px 34px;
+            font-size: 16px;
             font-weight: 700;
             border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-smooth);
+            text-decoration: none;
         }
 
-        .btn-read-more:hover {
+        .btn-primary:hover {
+            background: #e6b800;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 15px 34px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
             background: white;
             color: var(--primary-blue);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
         }
 
-        /* Content Container */
+        /* Statistics Highlight Panel */
+        .stats-section {
+            background-color: var(--bg-light);
+            padding: 50px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 38px;
+            color: var(--primary-blue);
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Main Content Containers */
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 70px 20px;
+            padding: 90px 20px;
         }
 
-        h2.section-title {
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+        }
+
+        .section-header h2 {
             color: var(--primary-blue);
-            font-size: 26px;
-            margin-bottom: 35px;
-            text-transform: capitalize;
+            font-size: 34px;
             font-weight: 800;
             letter-spacing: -0.5px;
+            margin-bottom: 15px;
         }
 
-        /* Cards Grid */
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Cards Grid Layout */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 35px;
         }
 
         .card {
             background: white;
-            border-radius: 18px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
             overflow: hidden;
-            border: 1px solid #f1f5f9;
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: var(--transition-smooth);
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .card-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
         }
 
         .card-img {
             width: 100%;
-            height: 210px;
+            height: 100%;
             object-fit: cover;
-            background-color: #e2e8f0;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.05);
         }
 
         .card-body {
-            padding: 28px;
+            padding: 32px;
         }
 
         .card-body h3 {
-            margin: 0 0 12px 0;
-            font-size: 20px;
+            margin: 0 0 14px 0;
+            font-size: 22px;
             color: #0f172a;
             font-weight: 700;
         }
 
         .card-body p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.7;
             margin: 0;
         }
 
         .card-footer {
-            padding: 0 28px 28px 28px;
+            padding: 0 32px 32px 32px;
         }
 
         .btn-card {
             background: transparent;
-            border: 1.5px solid var(--primary-blue);
+            border: 2px solid var(--primary-blue);
             color: var(--primary-blue);
-            padding: 10px 26px;
-            border-radius: 20px;
-            font-weight: 600;
+            padding: 11px 28px;
+            border-radius: 25px;
+            font-weight: 700;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn-card:hover {
@@ -220,28 +345,83 @@
             color: white;
         }
 
-        /* Footer */
+        /* Features Section */
+        .features-section {
+            background-color: var(--bg-light);
+            padding: 100px 20px;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card:hover {
+            border-color: var(--secondary-blue);
+            box-shadow: 0 10px 25px rgba(2, 62, 138, 0.05);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(2, 62, 138, 0.1);
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .feature-card h4 {
+            font-size: 18px;
+            color: #0f172a;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Comprehensive Footer */
         footer {
-            background-color: #0f172a;
+            background-color: #0b1120;
             color: #94a3b8;
-            padding: 70px 50px 30px 50px;
+            padding: 80px 50px 30px 50px;
         }
 
         .footer-grid {
             max-width: 1200px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 40px;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
         }
 
         .footer-col h4 {
             color: var(--accent-yellow);
-            font-size: 13px;
+            font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-bottom: 22px;
+            letter-spacing: 1.5px;
+            margin-bottom: 25px;
             font-weight: 700;
         }
 
@@ -252,33 +432,59 @@
         }
 
         .footer-col ul li {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .footer-col ul li a {
             color: #cbd5e1;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
             transition: color 0.2s ease;
         }
 
         .footer-col ul li a:hover {
             color: white;
+            padding-left: 4px;
         }
 
         .footer-bottom {
             max-width: 1200px;
             margin: 0 auto;
             border-top: 1px solid #1e293b;
-            padding-top: 25px;
+            padding-top: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            header, .hero, .top-bar {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .hero-content h1 {
+                font-size: 40px;
+            }
+            .hero {
+                padding: 80px 20px;
+            }
         }
     </style>
 </head>
 <body>
+
+    <div class="top-bar">
+        <div class="top-bar-info">
+            <span>📞 24/7 Enterprise Support: +1 (800) 555-TOTAL</span>
+            <span>✉️ enterprise@totalcom.net</span>
+        </div>
+        <div class="top-bar-links">
+            <a href="#">System Status</a>
+            <a href="#">Partner Network</a>
+            <a href="#">Security Portal</a>
+        </div>
+    </div>
 
     <header>
         <div class="logo-area">
@@ -299,90 +505,156 @@
 
     <section class="hero">
         <div class="hero-content">
+            <div class="hero-badge">🚀 Next-Generation Digital Ecosystem</div>
             <h1>Next-Gen Digital Connectivity</h1>
-            <p>Empowering businesses and communities with high-performance communication infrastructure, secure networks, and smart digital integration.</p>
-            <button class="btn-read-more">Explore Solutions</button>
+            <p>Empowering global enterprises and communities with ultra-reliable communication infrastructure, high-speed secure fiber networks, and scalable cloud integrations.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">Explore Solutions</a>
+                <a href="#" class="btn-secondary">Client Login</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>99.99%</h3>
+                <p>Network Uptime</p>
+            </div>
+            <div class="stat-item">
+                <h3>+15M</h3>
+                <p>Connected Users</p>
+            </div>
+            <div class="stat-item">
+                <h3>+1,200</h3>
+                <p>Enterprise Partners</p>
+            </div>
+            <div class="stat-item">
+                <h3>24 / 7</h3>
+                <p>Dedicated Support</p>
+            </div>
         </div>
     </section>
 
     <div class="container">
-        <h2 class="section-title">Totalcom Core Services</h2>
+        <div class="section-header">
+            <h2>Totalcom Core Services</h2>
+            <p>Discover our comprehensive suite of advanced enterprise infrastructure products designed to accelerate digital transformation and operational scale.</p>
+        </div>
+
         <div class="cards-grid">
-            
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=600" alt="Enterprise Connectivity" class="card-img">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=800" alt="Enterprise Connectivity" class="card-img">
+                </div>
                 <div class="card-body">
                     <h3>Enterprise Connectivity</h3>
-                    <p>High-speed, dedicated fiber and wireless data channels customized for high-volume enterprise demands.</p>
+                    <p>High-speed, dedicated symmetrical fiber and advanced wireless data channels meticulously customized for high-volume enterprise demands and low latency.</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn-card">Learn More</button>
+                    <button class="btn-card">Learn More →</button>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=600" alt="Secure Cloud Solutions" class="card-img">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" alt="Secure Cloud Solutions" class="card-img">
+                </div>
                 <div class="card-body">
                     <h3>Secure Cloud Solutions</h3>
-                    <p>Scalable storage, distributed computing, and robust cloud security architectures built for modern workflows.</p>
+                    <p>Scalable storage arrays, high-performance distributed computing nodes, and military-grade cloud security architectures built for modern enterprise workflows.</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn-card">Learn More</button>
+                    <button class="btn-card">Learn More →</button>
                 </div>
             </div>
 
             <div class="card">
-                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=600" alt="Smart Infrastructure" class="card-img">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=800" alt="Smart Infrastructure" class="card-img">
+                </div>
                 <div class="card-body">
                     <h3>Smart Infrastructure</h3>
-                    <p>Integrated automation and IoT tools designed to optimize energy efficiency and remote operational control.</p>
+                    <p>Integrated automation software and industrial IoT tools designed to optimize energy efficiency, remote telemetry, and real-time operational control.</p>
                 </div>
                 <div class="card-footer">
-                    <button class="btn-card">Learn More</button>
+                    <button class="btn-card">Learn More →</button>
                 </div>
             </div>
-
         </div>
     </div>
+
+    <section class="features-section">
+        <div class="section-header" style="margin-bottom: 50px;">
+            <h2>Why Industry Leaders Choose Totalcom</h2>
+            <p>Engineered from the ground up to offer maximum resilience, transparency, and seamless execution.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h4>Ultra-Low Latency</h4>
+                <p>Optimized packet routing paths ensuring near-instantaneous data transfer times across international branches.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h4>Advanced Security</h4>
+                <p>Multi-layered cyber protection frameworks featuring automatic DDoS mitigation and end-to-end encryption.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h4>Infinite Scalability</h4>
+                <p>Dynamic bandwidth provisioning allowing your network resources to grow alongside your business demands.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h4>Global Coverage</h4>
+                <p>Robust peering agreements and regional data centers ensuring uninterrupted uptime worldwide.</p>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
                 <h4>Getting Started</h4>
                 <ul>
-                    <li><a href="#">Client Portal</a></li>
-                    <li><a href="#">Network Coverage</a></li>
-                    <li><a href="#">Service Activation</a></li>
+                    <li><a href="#">Client Portal Access</a></li>
+                    <li><a href="#">Network Coverage Map</a></li>
+                    <li><a href="#">Service Activation Guide</a></li>
+                    <li><a href="#">Pricing Calculator</a></li>
                 </ul>
             </div>
             <div class="footer-col">
                 <h4>Solutions</h4>
                 <ul>
-                    <li><a href="#">Dedicated Internet</a></li>
-                    <li><a href="#">Private Networks</a></li>
+                    <li><a href="#">Dedicated Internet Access</a></li>
+                    <li><a href="#">Virtual Private Networks</a></li>
                     <li><a href="#">Data Center Hosting</a></li>
+                    <li><a href="#">Managed Security Services</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Support</h4>
+                <h4>Support & Dev</h4>
                 <ul>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">System Status</a></li>
+                    <li><a href="#">Help Center & FAQ</a></li>
+                    <li><a href="#">System Status Monitor</a></li>
                     <li><a href="#">API Documentation</a></li>
+                    <li><a href="#">Developer Community</a></li>
                 </ul>
             </div>
             <div class="footer-col">
-                <h4>Company</h4>
+                <h4>Company Info</h4>
                 <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press Releases</a></li>
+                    <li><a href="#">About Totalcom</a></li>
+                    <li><a href="#">Careers & Openings</a></li>
+                    <li><a href="#">Press & Media Kit</a></li>
+                    <li><a href="#">Investor Relations</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>Support: +1 (800) 555-TOTAL &nbsp;&nbsp;|&nbsp;&nbsp; contact@totalcom.net</p>
-            <p>&copy; Totalcom Inc. All Rights Reserved.</p>
+            <p>Global Hotline: +1 (800) 555-TOTAL &nbsp;&nbsp;|&nbsp;&nbsp; contact@totalcom.net</p>
+            <p>&copy; 2026 Totalcom Inc. All Rights Reserved.</p>
         </div>
     </footer>
 
