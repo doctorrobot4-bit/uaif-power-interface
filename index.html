@@ -1,150 +1,1448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIG-Connect: Integrated Digital Security Suite</title>
-    <!-- Google Fonts for a more polished look -->
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons (Recommended to include this in your actual hosting setup) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<meta charset="UTF-8">
+<title>Grand Meridian — Table Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Noto+Sans+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#231512;
+    --ivory:#f8f1e4;
+    --emerald:#5c1a2e;
+    --emerald-deep:#3d0f1e;
+    --brass:#c9a24b;
+    --brass-light:#e6c877;
+    --sage:#a8763f;
+    --line: rgba(35,21,18,0.12);
+    --card: #ffffff;
+    --sold: #6b6560;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background: var(--ivory);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{ min-height:100%; display:flex; flex-direction:column; align-items:center; padding:28px 16px 60px; }
 
-    <style>
-        /* --- Global Reset & Professional Base --- */
-        :root {
-            --primary-blue: #0056b3; /* Deep Corporate Blue */
-            --secondary-blue: #007bff; /* Accent Blue */
-            --text-dark: #333;
-            --background-light: #f4f7f9;
-            --success-green: #28a745;
-            --warning-orange: #ffc107;
-        }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--background-light); color: var(--text-dark); margin: 0; padding: 0; }
-        .container { max-width: 1200px; margin: 30px auto; background: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
+  /* ---------- Scan card intro ---------- */
+  #introWrap{
+    width:100%; max-width:420px; margin:20px auto 0;
+    perspective:1600px;
+  }
+  #introCard{
+    background: linear-gradient(160deg, var(--emerald), var(--emerald-deep));
+    border-radius:18px;
+    padding:40px 28px 34px;
+    color:var(--ivory);
+    text-align:center;
+    box-shadow: 0 20px 50px rgba(11,36,26,0.35);
+    transform-style:preserve-3d;
+    transition: transform 1.1s cubic-bezier(.2,.8,.2,1), opacity .8s ease;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+  }
+  #introCard::before{
+    content:"";
+    position:absolute; inset:0;
+    background: radial-gradient(circle at 30% 20%, rgba(184,144,47,0.25), transparent 55%);
+  }
+  #introCard.flipped{ transform: rotateY(-100deg); opacity:0; pointer-events:none; }
+  .eyebrow{ letter-spacing:.22em; font-size:11px; text-transform:uppercase; color:var(--brass-light); font-weight:600; margin-bottom:14px;}
+  .hotel-name{ font-family:'Fraunces', serif; font-size:34px; font-weight:600; margin:0 0 6px; line-height:1.05;}
+  .hotel-sub{ font-size:13px; color:rgba(250,246,239,0.72); margin-bottom:26px;}
+  .qr{
+    width:120px; height:120px; margin:0 auto 22px;
+    background:
+      repeating-linear-gradient(90deg, var(--ivory) 0 6px, transparent 6px 12px),
+      repeating-linear-gradient(0deg, var(--ivory) 0 6px, transparent 6px 12px);
+    background-blend-mode:multiply;
+    background-color:#3d0f1e;
+    border-radius:10px;
+    position:relative;
+  }
+  .qr::after{
+    content:"";
+    position:absolute; inset:14px;
+    border:6px solid var(--ivory); border-radius:4px;
+  }
+  .tap-hint{ font-size:12px; color:var(--brass-light); letter-spacing:.05em; }
+  .tap-hint b{ color:var(--ivory); }
 
-        /* --- Header/Branding --- */
-        header { background-color: var(--primary-blue); color: white; padding: 20px 0; text-align: center; border-bottom: 5px solid #e9ecef; margin-bottom: 30px; }
-        header h1 { margin: 0; font-size: 2.5em; letter-spacing: 1px; }
-        header p { margin-top: 5px; font-size: 1.1em; opacity: 0.9; }
+  /* ---------- Menu app ---------- */
+  #app{ width:100%; max-width:640px; opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  #app.show{ opacity:1; transform:translateY(0); }
 
-        /* --- Form Layout --- */
-        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 40px; }
-        .form-group { background-color: #eaf4ff; padding: 20px; border-radius: 8px; border-left: 5px solid var(--secondary-blue); }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary-blue); }
-        input[type="text"], input[type="password"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 1em; transition: border-color 0.3s; }
-        input:focus { border-color: var(--secondary-blue); box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); outline: none; }
+  .topbar{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand .mark{ width:34px; height:34px; border-radius:50%; background:var(--emerald); display:flex; align-items:center; justify-content:center; color:var(--brass-light); font-family:'Fraunces',serif; font-weight:700; font-size:16px;}
+  .brand-text .name{ font-family:'Fraunces', serif; font-weight:600; font-size:19px; line-height:1;}
+  .brand-text .loc{ font-size:11px; color:#6b6a63; margin-top:2px;}
 
-        /* --- Button Styling (Trustworthy Action) --- */
-        button { 
-            background-color: var(--success-green); 
-            color: white; 
-            padding: 15px 40px; 
-            border: none; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            font-size: 1.2em; 
-            font-weight: bold; 
-            transition: background-color 0.3s, transform 0.3s; 
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            text-transform: uppercase;
-        }
-        button:hover { 
-            background-color: #218838; /* Darker Green on hover */
-            transform: translateY(-2px);
-        }
+  .controls{ display:flex; gap:8px; align-items:center; }
+  .pill-toggle{ display:flex; border:1px solid var(--line); border-radius:999px; overflow:hidden; background:#fff; }
+  .pill-toggle button{ border:none; background:transparent; padding:7px 13px; font-size:12px; font-weight:600; cursor:pointer; color:#6b6a63; font-family:'Inter',sans-serif;}
+  .pill-toggle button.active{ background:var(--emerald); color:var(--ivory); }
 
-        /* --- Results Section (Dashboard Look) --- */
-        #results { margin-top: 40px; padding-top: 20px; border-top: 3px solid #ddd; }
-        #results h2 { color: var(--primary-blue); border-bottom: 2px solid var(--secondary-blue); padding-bottom: 10px; }
-        .status-box { background-color: #fff3cd; border-left: 5px solid var(--warning-orange); padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+  .staff-switch{ display:flex; align-items:center; gap:7px; border:1px solid var(--line); background:#fff; border-radius:999px; padding:6px 12px 6px 6px; font-size:12px; color:#6b6a63; font-weight:500;}
+  .switch{ width:32px; height:18px; border-radius:999px; background:#d8d5cb; position:relative; cursor:pointer; transition:background .25s ease; flex-shrink:0;}
+  .switch::after{ content:""; position:absolute; top:2px; left:2px; width:14px; height:14px; border-radius:50%; background:#fff; transition:transform .25s ease; box-shadow:0 1px 2px rgba(0,0,0,.3);}
+  .switch.on{ background:var(--brass); }
+  .switch.on::after{ transform:translateX(14px); }
 
-        /* --- Video Player --- */
-        .video-card { background: #222; padding: 20px; border-radius: 8px; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
-        .video-container { width: 100%; margin-top: 15px; }
-        .video-container video { width: 100%; height: auto; display: block; border-radius: 6px; }
-    </style>
+  .staff-banner{ display:none; background:var(--emerald); color:var(--ivory); font-size:12px; padding:9px 14px; border-radius:10px; margin-bottom:14px; align-items:center; gap:8px; }
+  .staff-banner.show{ display:flex; }
+  .staff-banner .dot{ width:7px; height:7px; border-radius:50%; background:var(--brass-light); flex-shrink:0;}
+
+  .venues{ display:flex; gap:8px; margin-bottom:14px; }
+  .venue{ flex:1; border:1px solid var(--line); background:#fff; border-radius:12px; padding:10px 10px; cursor:pointer; text-align:center; transition:.2s ease;}
+  .venue.active{ background:var(--emerald); border-color:var(--emerald); }
+  .venue .vname{ font-family:'Fraunces',serif; font-weight:600; font-size:12.5px; color:var(--ink); }
+  .venue.active .vname{ color:var(--ivory); }
+  .venue .vhours{ font-size:9.5px; color:#8b8a82; margin-top:1px;}
+  .venue.active .vhours{ color:rgba(250,246,239,0.65); }
+
+  .tabs{ display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:16px; scrollbar-width:none; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{ flex:0 0 auto; padding:8px 14px; border-radius:999px; border:1px solid var(--line); background:#fff; font-size:12.5px; font-weight:600; color:#5b5a53; cursor:pointer; font-family:'Inter',sans-serif; white-space:nowrap;}
+  .tab.active{ background:var(--ink); color:var(--ivory); border-color:var(--ink); }
+
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:480px){ .grid{ grid-template-columns:1fr; } }
+
+  .item{ background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; transition:opacity .3s ease, filter .3s ease; position:relative;}
+  .item.sold{ filter:grayscale(0.85) brightness(0.97); }
+  .item .art{ height:120px; position:relative; overflow:hidden; }
+  .item .art svg{ width:100%; height:100%; display:block; }
+  .sold-badge{ position:absolute; top:8px; left:8px; background:var(--sold); color:#fff; font-size:10px; font-weight:700; letter-spacing:.04em; padding:3px 8px; border-radius:999px; text-transform:uppercase; display:none; z-index:2;}
+  .item.sold .sold-badge{ display:inline-block; }
+  .item .body{ padding:12px 13px 13px; }
+  .item .name{ font-family:'Fraunces', serif; font-size:15.5px; font-weight:600; margin:0 0 3px; }
+  .item .desc{ font-size:11.5px; color:#7b7a72; line-height:1.4; margin:0 0 8px; min-height:30px;}
+  .tags{ display:flex; gap:5px; margin-bottom:9px; flex-wrap:wrap; }
+  .tag{ font-size:9px; font-weight:700; letter-spacing:.03em; padding:2px 6px; border-radius:5px; background:rgba(126,154,134,0.18); color:var(--emerald); text-transform:uppercase; }
+  .item .row{ display:flex; align-items:center; justify-content:space-between; }
+  .price{ font-family:'IBM Plex Mono', monospace; font-weight:500; font-size:13.5px; color:var(--emerald); border:none; background:transparent; width:64px; }
+  .price:focus{ outline:1px solid var(--brass); border-radius:4px; }
+  .order-btn{ border:none; background:var(--emerald); color:var(--ivory); font-size:11px; font-weight:600; padding:7px 12px; border-radius:8px; cursor:pointer; font-family:'Inter',sans-serif;}
+  .stepper{ display:flex; align-items:center; gap:9px; background:var(--ivory); border-radius:999px; padding:3px 4px;}
+  .stepper button{ width:24px; height:24px; border-radius:50%; border:none; background:var(--emerald); color:#fff; font-weight:700; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .stepper span{ font-size:12.5px; font-weight:700; min-width:14px; text-align:center;}
+  .order-btn:disabled{ background:#c9c6bb; cursor:not-allowed; }
+  .sold-toggle{ border:1px solid var(--sold); color:var(--sold); background:#fff; font-size:10.5px; font-weight:700; padding:6px 9px; border-radius:8px; cursor:pointer; }
+  .sold-toggle.is-sold{ background:var(--sold); color:#fff; }
+
+  .toast{ position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:var(--ivory); padding:10px 18px; border-radius:999px; font-size:12.5px; opacity:0; transition:opacity .25s ease, transform .25s ease; pointer-events:none; z-index:60; max-width:85%; text-align:center;}
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* ---- suggestions ---- */
+  .suggest-wrap{ margin-bottom:16px; }
+  .suggest-title{ font-family:'Fraunces',serif; font-weight:600; font-size:14px; margin-bottom:8px;}
+  .suggest-row{ display:flex; gap:10px; overflow-x:auto; scrollbar-width:none; padding-bottom:4px;}
+  .suggest-row::-webkit-scrollbar{ display:none;}
+  .suggest-card{ flex:0 0 auto; width:112px; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  .suggest-card .thumb{ width:100%; height:66px;}
+  .suggest-card .thumb svg{ width:100%; height:100%; display:block;}
+  .suggest-card .sn{ font-size:11.5px; font-weight:700; padding:6px 8px 2px; font-family:'Fraunces',serif;}
+  .suggest-card .sp{ font-size:10.5px; color:var(--emerald); font-weight:600; padding:0 8px 8px;}
+
+  /* ---- order pill + drawer ---- */
+  .order-pill{ position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--ivory); border:none; border-radius:999px; padding:13px 22px; font-size:13px; font-weight:600; display:none; align-items:center; gap:10px; cursor:pointer; box-shadow:0 10px 30px rgba(35,21,18,0.3); z-index:40;}
+  .order-pill.show{ display:flex;}
+  .order-pill .count{ background:var(--brass); color:var(--emerald-deep); border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;}
+
+  .modal-backdrop{ position:fixed; inset:0; background:rgba(35,21,18,0.45); opacity:0; pointer-events:none; transition:opacity .3s ease; z-index:70;}
+  .modal-backdrop.show{ opacity:1; pointer-events:auto;}
+  .modal{ position:fixed; left:16px; right:16px; bottom:16px; max-width:520px; margin:0 auto; background:var(--card); border-radius:18px; padding:20px; transform:translateY(30px); opacity:0; transition:.3s cubic-bezier(.2,.8,.2,1); z-index:71; max-height:80vh; overflow-y:auto; pointer-events:none;}
+  .modal.show{ transform:translateY(0); opacity:1; pointer-events:auto;}
+  .modal h3{ font-family:'Fraunces',serif; font-size:18px; margin:0 0 14px;}
+  .modal-close{ position:absolute; top:16px; right:18px; background:none; border:none; font-size:16px; color:#8b8a82; cursor:pointer;}
+
+  .cart-row{ display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); font-size:13px;}
+  .cart-row .thumb{ width:44px; height:44px; border-radius:9px; overflow:hidden; flex-shrink:0;}
+  .cart-row .thumb svg{ width:100%; height:100%;}
+  .cart-row .cname{ flex:1; font-family:'Fraunces',serif; font-weight:600;}
+  .cart-total{ display:flex; justify-content:space-between; padding-top:12px; font-weight:700; font-size:15px;}
+
+  .pay-field{ margin:12px 0 8px;}
+  .pay-field label{ font-size:11px; font-weight:600; color:#8b8a82; display:block; margin-bottom:4px;}
+  .pay-field input{ width:100%; border:1px solid var(--line); border-radius:10px; padding:9px 11px; font-size:13px; font-family:'Inter',sans-serif;}
+  .pay-methods-title{ font-family:'Fraunces',serif; font-size:13px; font-weight:600; margin:12px 0 8px;}
+  .pay-grid{ display:grid; grid-template-columns:1fr 1fr; gap:7px;}
+  .pay-option{ border:1px solid var(--line); background:#fff; border-radius:10px; padding:9px; cursor:pointer; text-align:center; font-size:11px; font-weight:600;}
+  .pay-option.active{ background:var(--emerald); border-color:var(--emerald); color:var(--ivory);}
+  .pay-option .plogo{ font-size:15px; margin-bottom:2px;}
+  .pay-confirm{ width:100%; margin-top:14px; border:none; background:var(--brass); color:var(--emerald-deep); padding:12px; border-radius:10px; font-weight:700; font-size:13px; cursor:pointer;}
+  .pay-confirm:disabled{ background:#ddd4c2; color:#999;}
+
+  .merchant-box{ background:var(--ivory); border:1px dashed var(--brass); border-radius:12px; padding:14px; margin:10px 0; text-align:center;}
+  .merchant-box .mlabel{ font-size:10.5px; color:#8b8a82; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px;}
+  .merchant-box .mvalue{ font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:600; color:var(--emerald); letter-spacing:.02em;}
+  .merchant-box .mname{ font-size:11.5px; color:#8b8a82; margin-top:4px;}
+  .merchant-amt{ text-align:center; margin:14px 0;}
+  .merchant-amt .a1{ font-size:11px; color:#8b8a82; text-transform:uppercase; letter-spacing:.05em;}
+  .merchant-amt .a2{ font-family:'Fraunces',serif; font-size:28px; font-weight:600; color:var(--ink);}
+  .verify-note{ font-size:11px; color:#8b8a82; text-align:center; margin-top:10px; line-height:1.5;}
+  .spinner{ width:16px; height:16px; border:2px solid rgba(35,21,18,0.15); border-top-color:var(--emerald); border-radius:50%; display:inline-block; animation:spin .7s linear infinite; vertical-align:middle; margin-right:6px;}
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .receipt{ background:var(--ivory); border-radius:12px; padding:16px; font-family:'IBM Plex Mono',monospace; font-size:12px;}
+  .receipt .rline{ display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--line);}
+  .receipt .rtotal{ font-weight:700; font-size:14px; padding-top:8px;}
+  .receipt-check{ text-align:center; margin-bottom:10px;}
+  .receipt-check .mark{ width:44px; height:44px; border-radius:50%; background:#3d6b4f; color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:22px;}
+
+  /* ---- staff dashboard ---- */
+  .staff-dash{ margin-bottom:16px;}
+  .dash-title{ font-family:'Fraunces',serif; font-weight:600; font-size:14px; margin-bottom:8px;}
+  .onduty-row{ display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scrollbar-width:none;}
+  .onduty-row::-webkit-scrollbar{ display:none;}
+  .staff-person{ flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:4px; width:56px;}
+  .staff-avatar{ width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:700; font-size:13px; color:#fff;}
+  .staff-person .sname{ font-size:8.5px; text-align:center; color:#8b8a82; font-weight:600; line-height:1.2;}
+
+  .order-card{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:8px;}
+  .order-card .oh{ display:flex; justify-content:space-between; font-size:11.5px; font-weight:700; margin-bottom:4px;}
+  .order-card .ostatus{ font-size:9px; font-weight:700; padding:2px 6px; border-radius:999px; text-transform:uppercase;}
+  .order-card .ostatus.new{ background:rgba(201,162,75,0.2); color:#8a6a1f;}
+  .order-card .ostatus.done{ background:rgba(61,107,79,0.15); color:#3d6b4f;}
+  .order-card .oitems{ font-size:11px; color:#8b8a82; line-height:1.5;}
+  .pay-badge{ font-size:8.5px; font-weight:700; padding:2px 6px; border-radius:999px; text-transform:uppercase;}
+  .pay-badge.paid{ background:rgba(61,107,79,0.15); color:#3d6b4f;}
+  .pay-badge.unpaid{ background:rgba(138,58,58,0.14); color:#8a3a3a;}
+  .order-contact{ font-size:10px; color:#8b8a82; margin-top:3px;}
+  .order-assigned{ font-size:9.5px; color:#8b8a82; margin-top:2px; font-style:italic;}
+  .order-card button{ margin-top:7px; border:none; background:var(--ink); color:var(--ivory); font-size:10px; font-weight:700; padding:6px 10px; border-radius:8px; cursor:pointer;}
+  .empty-note{ text-align:center; padding:16px; color:#8b8a82; font-size:12px;}
+
+  .notif-badge{ position:absolute; top:-5px; right:-5px; background:#c0392b; color:#fff; font-size:9px; font-weight:800; width:16px; height:16px; border-radius:50%; display:none; align-items:center; justify-content:center; z-index:5;}
+  .notif-badge.show{ display:flex; animation:notifPop .35s ease;}
+  @keyframes notifPop{ 0%{ transform:scale(0);} 60%{ transform:scale(1.3);} 100%{ transform:scale(1);} }
+  .order-card.status-new{ border-color:#c9a24b; border-width:1.5px;}
+  .order-seq{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:#8b8a82; margin-right:6px;}
+  .status-pipeline{ display:flex; gap:5px; margin-top:8px;}
+  .status-pipeline button{ flex:1; margin-top:0; font-size:9.5px; padding:7px 4px; text-align:center;}
+  .status-pipeline .step-new{ background:#c9a24b; color:#3d2a0f;}
+  .status-pipeline .step-cooking{ background:#3d6b8a; color:#fff;}
+  .status-pipeline .step-ready{ background:#3d6b4f; color:#fff;}
+  .ostatus.cooking{ background:rgba(61,107,138,0.16); color:#2c5270;}
+  .ostatus.ready{ background:rgba(61,107,79,0.16); color:#2f5a3d;}
+  .ostatus.served{ background:rgba(139,138,130,0.16); color:#6b6a63;}
+
+  /* ---- about modal ---- */
+  .about-body p{ font-size:12.5px; line-height:1.7; margin:0 0 12px;}
+  .about-sub{ font-size:11.5px; color:#8b8a82; margin-bottom:14px;}
+
+  /* ---- staff PIN lock ---- */
+  .pin-dots{ display:flex; justify-content:center; gap:14px; margin:18px 0;}
+  .pin-dot{ width:14px; height:14px; border-radius:50%; border:1.5px solid var(--line); background:transparent; transition:.15s ease;}
+  .pin-dot.filled{ background:var(--emerald); border-color:var(--emerald);}
+  .pin-keys{ display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; max-width:260px; margin:0 auto;}
+  .pin-key{ aspect-ratio:1; border-radius:50%; border:1px solid var(--line); background:#fff; font-family:'Fraunces',serif; font-size:19px; font-weight:600; cursor:pointer; color:var(--ink);}
+  .pin-key:active{ background:var(--ivory);}
+  .pin-key.wide{ font-family:'Inter',sans-serif; font-size:12px; color:#8b8a82;}
+  .pin-error{ text-align:center; font-size:11.5px; color:#8a3a3a; height:16px; margin-bottom:4px;}
+  .pin-forgot{ display:block; text-align:center; margin-top:14px; font-size:11.5px; color:var(--emerald); cursor:pointer; text-decoration:underline;}
+
+  /* ---- admin panel ---- */
+  .admin-overlay{ position:fixed; inset:0; background:var(--ivory); z-index:80; display:none; flex-direction:column;}
+  .admin-overlay.show{ display:flex;}
+  .admin-head{ background:linear-gradient(160deg, var(--emerald), var(--emerald-deep)); color:var(--ivory); padding:16px 18px; display:flex; align-items:center; justify-content:space-between;}
+  .admin-head h2{ font-family:'Fraunces',serif; font-size:18px; margin:0;}
+  .admin-tabs{ display:flex; gap:4px; overflow-x:auto; padding:10px 14px; background:#fff; border-bottom:1px solid var(--line); scrollbar-width:none;}
+  .admin-tabs::-webkit-scrollbar{ display:none;}
+  .admin-tab{ flex:0 0 auto; padding:7px 13px; border-radius:999px; border:1px solid var(--line); background:#fff; font-size:11.5px; font-weight:600; color:#5b5a53; cursor:pointer; white-space:nowrap;}
+  .admin-tab.active{ background:var(--ink); color:var(--ivory); border-color:var(--ink);}
+  .admin-body{ flex:1; overflow-y:auto; padding:16px 18px 90px;}
+  .admin-pane{ display:none;}
+  .admin-pane.active{ display:block;}
+  .admin-section-title{ font-family:'Fraunces',serif; font-size:15px; font-weight:600; margin:0 0 10px;}
+  .admin-row{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px;}
+  .admin-row .arow-top{ display:flex; gap:8px; margin-bottom:8px;}
+  .admin-row input[type=text], .admin-row input[type=number]{ border:1px solid var(--line); border-radius:8px; padding:7px 9px; font-size:12.5px; font-family:'Inter',sans-serif; width:100%;}
+  .admin-row select{ border:1px solid var(--line); border-radius:8px; padding:7px 9px; font-size:12.5px; font-family:'Inter',sans-serif;}
+  .admin-row .tagchecks{ display:flex; gap:10px; font-size:11px; align-items:center; margin:6px 0;}
+  .admin-row .tagchecks label{ display:flex; align-items:center; gap:4px;}
+  .admin-mini-btn{ border:none; background:#eee; color:#666; font-size:11px; font-weight:700; padding:6px 10px; border-radius:7px; cursor:pointer;}
+  .admin-mini-btn.danger{ background:rgba(138,58,58,0.12); color:#8a3a3a;}
+  .admin-mini-btn.primary{ background:var(--emerald); color:var(--ivory);}
+  .admin-add-btn{ width:100%; border:1px dashed var(--brass); background:transparent; color:var(--emerald); font-weight:700; font-size:12.5px; padding:12px; border-radius:12px; cursor:pointer; margin-top:6px;}
+  .admin-field{ margin-bottom:12px;}
+  .admin-field label{ font-size:11px; font-weight:600; color:#8b8a82; display:block; margin-bottom:4px;}
+  .admin-field textarea{ width:100%; border:1px solid var(--line); border-radius:10px; padding:9px 11px; font-size:12.5px; font-family:'Inter',sans-serif; resize:vertical; min-height:70px;}
+  .swatch{ width:22px; height:22px; border-radius:50%; flex-shrink:0; align-self:center;}
+  .save-banner{ position:fixed; bottom:16px; left:16px; right:16px; max-width:520px; margin:0 auto; background:var(--ink); color:var(--ivory); text-align:center; padding:11px; border-radius:12px; font-size:12.5px; font-weight:600; opacity:0; transition:.3s ease; pointer-events:none;}
+  .save-banner.show{ opacity:1;}
+
+  /* Arabic / RTL */
+  html[dir="rtl"] body{ font-family:'Noto Sans Arabic','Inter',sans-serif; }
+  html[dir="rtl"] .hotel-name, html[dir="rtl"] .item .name, html[dir="rtl"] .brand-text .name{ font-family:'Noto Sans Arabic', serif; }
+  html[dir="rtl"] .grid{ direction:rtl; }
+
+  /* ---- table picker ---- */
+  #tablePicker{ width:100%; max-width:420px; margin:20px auto 0; opacity:0; transform:translateY(10px); transition:opacity .4s ease, transform .4s ease; pointer-events:none; }
+  #tablePicker.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
+  .tp-title{ font-family:'Fraunces',serif; font-size:20px; font-weight:600; text-align:center; margin-bottom:4px;}
+  .tp-sub{ font-size:12px; color:#8b8a82; text-align:center; margin-bottom:18px;}
+  .tp-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;}
+  .tp-btn{ aspect-ratio:1; border-radius:12px; border:1px solid var(--line); background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-weight:600; font-size:16px; cursor:pointer; color:var(--ink); transition:.15s ease;}
+  .tp-btn .tp-status{ font-family:'Inter',sans-serif; font-size:8.5px; font-weight:600; text-transform:uppercase; color:#8b8a82; margin-top:2px;}
+  .tp-btn:active{ transform:scale(0.94);}
+  .tp-btn.taken{ background:#f1ede4; color:#b8b2a4; cursor:not-allowed; border-style:dashed;}
+  .tp-btn.taken .tp-status{ color:#c2a15e;}
+</style>
 </head>
 <body>
+<div class="stage">
 
-    <div class="container">
-        <header>
-            <h1>DIG-Connect</h1>
-            <p>Advanced Digital Intrusion & Recovery Platform</p>
-        </header>
+  <div id="introWrap">
+    <div id="introCard" onclick="scanIn()">
+      <div class="eyebrow">Grand Meridian</div>
+      <h1 class="hotel-name">Grand Meridian</h1>
+      <div class="hotel-sub">Scan to view today's menu</div>
+      <div class="qr"></div>
+      <div class="tap-hint">Tap the card — <b>this simulates a QR scan</b></div>
+    </div>
+  </div>
 
-        <form id="hackForm" action="/submit_hack" method="POST">
-            <h2>Credentials Input Area</h2>
+  <div id="tablePicker">
+    <div class="tp-title" id="tpTitle">Which table are you at?</div>
+    <div class="tp-sub" id="tpSub">Select your table to continue</div>
+    <div class="tp-grid" id="tpGrid"></div>
+  </div>
 
-            <div class="form-grid">
-
-                <!-- Google Account Group -->
-                <div class="form-group">
-                    <h3>• Google Ecosystem Access</h3>
-                    <label for="google_email">Google Account (Email):</label>
-                    <input type="text" id="google_email" name="google_email" required>
-                    <label for="google_pass">Password / Key:</label>
-                    <input type="password" id="google_pass" name="google_pass" required>
-                </div>
-
-                <!-- Telegram Group -->
-                <div class="form-group">
-                    <h3>• Messaging & Communication Suite (Telegram)</h3>
-                    <label for="telegram_phone">Telegram Identifier (Phone/Username):</label>
-                    <input type="text" id="telegram_phone" name="telegram_phone" required>
-                    <label for="telegram_pass">Password / 2FA Code:</label>
-                    <input type="password" id="telegram_pass" name="telegram_pass" required>
-                </div>
-
-                <!-- Placeholder for potential other services (adds depth) -->
-                <div class="form-group" style="background-color: #e9f7f0; border-left: 5px solid #28a745;">
-                    <h3>• System Diagnostic (Placeholder)</h3>
-                    <label for="other_service">Service/IP Address to Scan:</label>
-                    <input type="text" id="other_service" name="other_service" value="ethio.et" required>
-                    <label for="other_pass">Diagnostic Key/Token:</label>
-                    <input type="password" id="other_pass" name="other_pass" value="COREKEY123" required>
-                </div>
-            </div>
-
-            <button type="submit">⚡ ANALYZE & INITIATE BREACH</button>
-        </form>
-
-        <div id="results">
-            <h2>Operational Status Dashboard</h2>
-
-            <div class="status-box">
-                <p id="statusMessage">System Online. Awaiting credentials input to run diagnostic scan...</p>
-            </div>
-
-            <h3>Live Video Feed / Proof Stream:</h3>
-            <div class="video-card">
-                <div class="video-container">
-                    <video id="liveVideo" controls autoplay muted poster="https://via.placeholder.com/1200x500?text=Live+Data+Stream+In+Progress">
-                        <!-- Source will be updated by Python backend on submission -->
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            </div>
+  <div id="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="mark">GM</div>
+        <div class="brand-text">
+          <div class="name" id="hotelNameText">Grand Meridian</div>
+          <div class="loc" id="tableText">Table 12 · Terrace</div>
         </div>
+      </div>
+      <div class="controls">
+        <div class="pill-toggle" id="langToggle">
+          <button class="active" data-lang="en">EN</button>
+          <button data-lang="am">AM</button>
+          <button data-lang="ar">AR</button>
+        </div>
+        <div class="pill-toggle" id="currToggle">
+          <button class="active" data-curr="ETB">ETB</button>
+          <button data-curr="USD">USD</button>
+        </div>
+        <div class="staff-switch" onclick="toggleStaff()" style="position:relative;">
+          <div class="switch" id="staffSwitch"></div>
+          <span id="staffLabel">Staff view</span>
+          <span class="notif-badge" id="notifBadge1">0</span>
+        </div>
+        <button class="order-btn" style="background:var(--brass); color:var(--emerald-deep);" onclick="openModal('about')" id="aboutBtnLabel">About</button>
+        <button class="order-btn" style="background:var(--ink); color:var(--ivory); position:relative;" onclick="requestAdmin()" id="adminBtnLabel">⚙ Admin<span class="notif-badge" id="notifBadge2">0</span></button>
+      </div>
     </div>
 
-    <script>
-        // --- JavaScript Logic for Autoplay/Video Control ---
-        document.addEventListener('DOMContentLoaded', function() {
-            const videoElement = document.getElementById('liveVideo');
+    <div class="staff-banner" id="staffBanner">
+      <div class="dot"></div>
+      <span id="staffBannerText">Staff mode — edit prices inline, mark items sold out. Changes update live, no login needed.</span>
+    </div>
 
-            // Attempt to preload a sample video source if possible, or keep the placeholder
-            videoElement.src = 'sample_video.mp4'; // <--- REMEMBER TO PLACE THIS FILE LOCALLY
-            videoElement.play();
-        });
+    <div class="staff-dash" id="staffDash" style="display:none;">
+      <div class="dash-title" id="onDutyTitle">Staff on duty</div>
+      <div class="onduty-row" id="onDutyRow"></div>
+      <div class="dash-title" id="liveOrdersTitle">Live orders</div>
+      <div id="ordersWrap"></div>
+    </div>
 
-        // Optional: Add AJAX/Fetch for better user experience (requires setting up JS fetch calls)
-        document.getElementById('hackForm').addEventListener('submit', function(e) {
-            // Add AJAX logic here to prevent full page reload while processing
-            console.log("Form submission initiated. Data will be processed by Flask backend.");
-        });
-    </script>
+    <div class="venues" id="venues"></div>
+    <div class="suggest-wrap">
+      <div class="suggest-title" id="suggestTitle">You might also like</div>
+      <div class="suggest-row" id="suggestRow"></div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
 
+<button class="order-pill" id="orderPill" onclick="openModal('cart')">
+  <span id="pillLabel">View order</span><span class="count" id="pillCount">0</span>
+</button>
+
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal()"></div>
+
+<div class="modal" id="modal-cart">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h3 id="cartTitle">Your order</h3>
+  <div id="cartList"></div>
+  <div class="cart-total"><span id="cartTotalLabel">Total</span><span id="cartTotalAmt">0 ETB</span></div>
+  <button class="pay-confirm" id="goToPayBtn" onclick="openModal('pay')">Continue to payment</button>
+</div>
+
+<div class="modal" id="modal-pay">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h3 id="payTitle">Pay for your order</h3>
+  <div class="pay-field"><label id="lblName">Your name</label><input id="guestName" placeholder="e.g. Abebe Kebede"></div>
+  <div class="pay-field"><label id="lblPhone">Phone number</label><input id="guestPhone" placeholder="e.g. 09xx xxx xxx"></div>
+  <div class="pay-methods-title" id="payMethodsTitle">Choose payment method</div>
+  <div class="pay-grid" id="payGrid"></div>
+  <button class="pay-confirm" id="payConfirmBtn" onclick="goToInstructions()" disabled>Confirm & send order</button>
+</div>
+
+<div class="modal" id="modal-instructions">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h3 id="instrTitle">Complete your payment</h3>
+  <div class="merchant-amt"><div class="a1" id="instrAmountLabel">Amount due</div><div class="a2" id="instrAmount">0 ETB</div></div>
+  <div class="merchant-box" id="merchantBox"></div>
+  <div class="verify-note" id="instrNote">Send the payment using your banking or Telebirr app, then tap below.</div>
+  <div class="pay-field" style="margin-top:14px;">
+    <label id="screenshotLabel">Upload a screenshot of your payment confirmation</label>
+    <input type="file" accept="image/*" id="screenshotInput" onchange="onScreenshotSelected(event)" style="width:100%; font-size:12px;">
+    <div id="screenshotPreviewWrap" style="display:none; margin-top:8px;">
+      <img id="screenshotPreview" style="width:100%; max-height:140px; object-fit:cover; border-radius:10px; border:1px solid var(--line);">
+    </div>
+  </div>
+  <div class="pay-field">
+    <label id="txnRefLabel">Transaction reference (from your receipt)</label>
+    <input id="txnRef" placeholder="e.g. FT26196XXXXX" oninput="checkProofReady()">
+  </div>
+  <div class="pay-field">
+    <label id="txnAmountLabel">Amount paid (from your receipt)</label>
+    <input id="txnAmount" placeholder="0.00 ETB" inputmode="decimal" oninput="checkProofReady()">
+    <div class="pin-error" id="amountMismatchMsg"></div>
+  </div>
+  <button class="pay-confirm" id="sentPaymentBtn" onclick="markPaymentSent()" disabled>I've sent the payment</button>
+</div>
+
+<div class="modal" id="modal-receipt">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h3 id="receiptTitle">Receipt</h3>
+  <div class="receipt-check"><span class="mark">✓</span></div>
+  <div class="receipt" id="receiptBody"></div>
+</div>
+
+<div class="modal" id="modal-about">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h3 id="aboutTitle">Our Story</h3>
+  <div class="about-sub" id="aboutSub">Grand Meridian Hotel — since 1987</div>
+  <div class="about-body">
+    <p id="aboutP1"></p>
+    <p id="aboutP2"></p>
+    <p id="aboutP3"></p>
+    <p id="aboutNote" style="font-size:11px; color:#8b8a82;"></p>
+  </div>
+</div>
+
+<div class="modal" id="modal-pin">
+  <button class="modal-close" onclick="cancelPin()">✕</button>
+  <h3 id="pinTitle">Staff PIN</h3>
+  <div class="pin-error" id="pinError"></div>
+  <div class="pin-dots" id="pinDots"><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span></div>
+  <div class="pin-keys" id="pinKeys"></div>
+  <span class="pin-forgot" onclick="startRecovery()">Forgot PIN?</span>
+</div>
+
+<div class="modal" id="modal-recover">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h3>Account recovery</h3>
+  <div class="pay-field">
+    <label id="secQLabel">Security question</label>
+    <div style="font-size:13px; font-weight:600; margin-bottom:8px;" id="secQText">What is the hotel's founding year?</div>
+    <input id="secAnswer" placeholder="Your answer">
+  </div>
+  <div class="pin-error" id="recoverError"></div>
+  <button class="pay-confirm" onclick="checkRecovery()" id="recoverCheckBtn">Verify answer</button>
+</div>
+
+<div class="modal" id="modal-newpin">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <h3>Set a new PIN</h3>
+  <div class="pay-field"><label>New 6-digit PIN</label><input id="newPin1" maxlength="6" inputmode="numeric" placeholder="••••••"></div>
+  <div class="pay-field"><label>Confirm new PIN</label><input id="newPin2" maxlength="6" inputmode="numeric" placeholder="••••••"></div>
+  <div class="pin-error" id="newPinError"></div>
+  <button class="pay-confirm" onclick="setNewPin()">Save new PIN</button>
+</div>
+
+<!-- ================= ADMIN PANEL ================= -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-head">
+    <h2>Admin Panel</h2>
+    <button class="icon-btn" style="width:32px;height:32px;background:rgba(255,255,255,0.15);border:none;border-radius:50%;color:#fff;cursor:pointer;" onclick="closeAdmin()">✕</button>
+  </div>
+  <div class="admin-tabs" id="adminTabs"></div>
+  <div class="admin-body">
+    <div class="admin-pane active" id="pane-menu"></div>
+    <div class="admin-pane" id="pane-tables"></div>
+    <div class="admin-pane" id="pane-staff"></div>
+    <div class="admin-pane" id="pane-payments"></div>
+    <div class="admin-pane" id="pane-hotel"></div>
+    <div class="admin-pane" id="pane-security"></div>
+  </div>
+  <div class="save-banner" id="saveBanner">Saved</div>
+</div>
+
+<svg width="0" height="0" style="position:absolute">
+  <filter id="rough1"><feTurbulence type="fractalNoise" baseFrequency="0.012 0.04" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14"/></filter>
+  <filter id="rough2"><feTurbulence type="fractalNoise" baseFrequency="0.015 0.03" numOctaves="2" seed="21" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="10"/></filter>
+</svg>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const copy = {
+  en: {
+    hotel: "Grand Meridian", tableLabel: n => `Table ${n} · Terrace`,
+    staffLabel: "Staff view",
+    staffBanner: "Staff mode — edit prices inline, mark items sold out. Changes update live, no login needed.",
+    order: "Order", sold: "Sold out", markSold: "Mark sold", markBack: "Bring back",
+    toastOrdered: n => `Added "${n}" to your order`,
+    toastSold: n => `"${n}" marked sold out — guests see it instantly`,
+    toastBack: n => `"${n}" is back on the menu`,
+    toastPrice: n => `Price updated for "${n}"`,
+    suggestTitle: "You might also like",
+    viewOrder: "View order", drawerTitle: "Your order", drawerEmpty: "Your order is empty.",
+    lblName: "Your name", lblPhone: "Phone number", payMethodsTitle: "Choose payment method",
+    payConfirm: "Confirm & send order", total: "Total", toastSent: "Order sent — payment confirmed!",
+    liveOrders: "Live orders", noOrders: "No orders yet.", onDuty: "Staff on duty",
+    paid: "Paid", unpaid: "Unpaid", assignedTo: n => `Assigned to ${n}`, unassigned: "Unassigned — choose staff", orderReady: "Mark ready", orderDone: "Ready",
+    statusNew:"New", statusCooking:"Cooking", statusReady:"Ready", statusServed:"Served",
+    startCooking:"Start cooking", markReady:"Mark ready", markServed:"Mark served",
+    aboutBtn: "About", aboutTitle: "Our Story", aboutSub: "Grand Meridian Hotel — since 1987",
+    aboutP1: "Founded in 1987 on the old caravan road overlooking the city, Grand Meridian began as a modest 20-room guesthouse before growing into the landmark it is today.",
+    aboutP2: "Our kitchen blends traditional recipes passed down through generations with modern technique, sourcing ingredients from local farms whenever possible.",
+    aboutP3: "Front desk: +251 11 000 0000 · info@grandmeridian-example.com",
+    aboutNote: "(This is placeholder example text — swap in your hotel's real history and contact details.)",
+    payTitle: "Pay for your order", continuePay: "Continue to payment",
+    instrTitle:"Complete your payment", amountDue:"Amount due", sendTo:"Send payment to", accountLabel:"Account number",
+    phoneLabel:"Telebirr number", walletLabel:"Wallet address", instrNote:"Send the payment using your banking or Telebirr app, then tap below.",
+    sentBtn:"I've sent the payment", verifying:"Verifying payment…", verifyNote:"This usually takes a few seconds.",
+    screenshotLabel:"Upload a screenshot of your payment confirmation",
+    txnRefLabel:"Transaction reference (from your receipt)", txnAmountLabel:"Amount paid (from your receipt)",
+    receiptTitle:"Receipt", rOrder:"Order", rTable:"Table", rMethod:"Method", rRef:"Reference", rGuest:"Guest", rTotal:"Total", rDate:"Date", rStatus:"Status", doneBtn:"Done",
+    tpTitle:"Which table are you at?", tpSub:"Select your table to continue", tpTaken:"Taken",
+    pinTitle:"Enter staff PIN",
+    cats: {breakfast:"Breakfast", lunch:"Lunch", dinner:"Dinner", starters:"Starters", mains:"Mains", desserts:"Desserts", drinks:"Drinks", specials:"Specials"}
+  },
+  am: {
+    hotel: "ግራንድ መሪዲያን", tableLabel: n => `ጠረጴዛ ${n} · እርከን`,
+    staffLabel: "የሰራተኛ እይታ",
+    staffBanner: "የሰራተኛ ሁነታ — ዋጋዎችን በቀጥታ ያርትዑ፣ የተሟሉ ዕቃዎችን ምልክት ያድርጉ። ለውጦች ወዲያውኑ ይታያሉ።",
+    order: "አዝዝ", sold: "አልቋል", markSold: "እንዳለቀ ምልክት አድርግ", markBack: "መልስ",
+    toastOrdered: n => `"${n}" ወደ ትዕዛዝዎ ታክሏል`,
+    toastSold: n => `"${n}" እንዳለቀ ተመልክቷል`,
+    toastBack: n => `"${n}" ወደ ዝርዝሩ ተመልሷል`,
+    toastPrice: n => `የ"${n}" ዋጋ ተቀይሯል`,
+    suggestTitle: "እንዲሁም ሊወዱት ይችላሉ",
+    viewOrder: "ትዕዛዝ ይመልከቱ", drawerTitle: "የእርስዎ ትዕዛዝ", drawerEmpty: "ትዕዛዝዎ ባዶ ነው።",
+    lblName: "ስምዎ", lblPhone: "ስልክ ቁጥር", payMethodsTitle: "የክፍያ መንገድ ይምረጡ",
+    payConfirm: "አረጋግጥ እና ላክ", total: "ጠቅላላ", toastSent: "ትዕዛዝ ተልኳል — ክፍያ ተረጋግጧል!",
+    liveOrders: "ቀጥታ ትዕዛዞች", noOrders: "እስካሁን ትዕዛዝ የለም።", onDuty: "የስራ ላይ ሰራተኞች",
+    paid: "ተከፍሏል", unpaid: "አልተከፈለም", assignedTo: n => `ለ${n} ተመድቧል`, unassigned: "አልተመደበም — ሰራተኛ ይምረጡ", orderReady: "ዝግጁ ምልክት አድርግ", orderDone: "ዝግጁ",
+    statusNew:"አዲስ", statusCooking:"በማብሰል ላይ", statusReady:"ዝግጁ", statusServed:"ቀርቧል",
+    startCooking:"ማብሰል ጀምር", markReady:"ዝግጁ ምልክት አድርግ", markServed:"እንደቀረበ ምልክት አድርግ",
+    aboutBtn: "ስለ እኛ", aboutTitle: "ታሪካችን", aboutSub: "ግራንድ መሪዲያን ሆቴል — ከ1987 ጀምሮ",
+    aboutP1: "በ1987 ከተማዋን በሚመለከት አሮጌ መንገድ ላይ የተመሰረተው ግራንድ መሪዲያን በ20 ክፍሎች የእንግዳ ማረፊያ ጀምሮ ዛሬ ወዳለው ምልክት አድጓል።",
+    aboutP2: "የእኛ ኩሽና ከትውልድ ወደ ትውልድ የተላለፉ ባህላዊ የምግብ አዘገጃጀቶችን ከዘመናዊ ቴክኒክ ጋር ያዋህዳል።",
+    aboutP3: "የፊት ገበታ: +251 11 000 0000 · info@grandmeridian-example.com",
+    aboutNote: "(ይህ ምሳሌ ጽሑፍ ብቻ ነው — በእውነተኛ የሆቴልዎ ታሪክና መረጃ ይቀይሩት።)",
+    payTitle: "ለትዕዛዝዎ ይክፈሉ", continuePay: "ወደ ክፍያ ይቀጥሉ",
+    instrTitle:"ክፍያዎን ያጠናቅቁ", amountDue:"የሚከፈል መጠን", sendTo:"ክፍያ ይላኩ ወደ", accountLabel:"የሂሳብ ቁጥር",
+    phoneLabel:"የቴሌብር ቁጥር", walletLabel:"የዋሌት አድራሻ", instrNote:"በባንክ ወይም በቴሌብር መተግበሪያዎ ይክፈሉ፣ ከዚያ ከታች ይንኩ።",
+    sentBtn:"ክፍያውን ልኬያለሁ", verifying:"ክፍያ በማረጋገጥ ላይ…", verifyNote:"ይህ ብዙውን ጊዜ ጥቂት ሰከንዶች ይወስዳል።",
+    screenshotLabel:"የክፍያ ማረጋገጫ ቅጽበታዊ ገጽ እይታ ይስቀሉ",
+    txnRefLabel:"የግብይት ማጣቀሻ ቁጥር (ከደረሰኝዎ)", txnAmountLabel:"የተከፈለ መጠን (ከደረሰኝዎ)",
+    receiptTitle:"ደረሰኝ", rOrder:"ትዕዛዝ", rTable:"ጠረጴዛ", rMethod:"የክፍያ መንገድ", rRef:"ማጣቀሻ", rGuest:"እንግዳ", rTotal:"ጠቅላላ", rDate:"ቀን", rStatus:"ሁኔታ", doneBtn:"ተጠናቋል",
+    tpTitle:"በየትኛው ጠረጴዛ ላይ ነዎት?", tpSub:"ለመቀጠል ጠረጴዛዎን ይምረጡ", tpTaken:"ተይዟል",
+    pinTitle:"የሰራተኛ ኮድ ያስገቡ",
+    cats: {breakfast:"ቁርስ", lunch:"ምሳ", dinner:"እራት", starters:"ማስጀመሪያ", mains:"ዋና ምግብ", desserts:"ጣፋጭ", drinks:"መጠጦች", specials:"ልዩ ምግቦች"}
+  },
+  ar: {
+    hotel: "جراند ميريديان", tableLabel: n => `طاولة ${n} · التراس`,
+    staffLabel: "وضع الموظفين",
+    staffBanner: "وضع الموظفين — عدّل الأسعار مباشرة وحدّد الأصناف غير المتوفرة. تظهر التغييرات فوراً دون تسجيل خروج.",
+    order: "اطلب", sold: "غير متوفر", markSold: "غير متوفر", markBack: "إعادة",
+    toastOrdered: n => `تمت إضافة "${n}" إلى طلبك`,
+    toastSold: n => `تم تعليم "${n}" كغير متوفر — يظهر للضيوف فوراً`,
+    toastBack: n => `"${n}" عاد إلى القائمة`,
+    toastPrice: n => `تم تحديث سعر "${n}"`,
+    suggestTitle: "قد يعجبك أيضاً",
+    viewOrder: "عرض الطلب", drawerTitle: "طلبك", drawerEmpty: "طلبك فارغ.",
+    lblName: "اسمك", lblPhone: "رقم الهاتف", payMethodsTitle: "اختر طريقة الدفع",
+    payConfirm: "تأكيد وإرسال", total: "الإجمالي", toastSent: "تم إرسال الطلب — تم تأكيد الدفع!",
+    liveOrders: "الطلبات المباشرة", noOrders: "لا توجد طلبات بعد.", onDuty: "الموظفون في الخدمة",
+    paid: "مدفوع", unpaid: "غير مدفوع", assignedTo: n => `مسند إلى ${n}`, unassigned: "غير مسند — اختر موظفاً", orderReady: "تعليم كجاهز", orderDone: "جاهز",
+    statusNew:"جديد", statusCooking:"قيد الطهي", statusReady:"جاهز", statusServed:"تم التقديم",
+    startCooking:"ابدأ الطهي", markReady:"تعليم كجاهز", markServed:"تعليم كمُقدَّم",
+    aboutBtn: "عن الفندق", aboutTitle: "قصتنا", aboutSub: "فندق جراند ميريديان — منذ ١٩٨٧",
+    aboutP1: "تأسس فندق جراند ميريديان عام ١٩٨٧ على طريق القوافل القديم المطل على المدينة، وبدأ كبيت ضيافة متواضع من ٢٠ غرفة قبل أن يصبح المعلم الذي هو عليه اليوم.",
+    aboutP2: "يمزج مطبخنا بين الوصفات التقليدية المتوارثة عبر الأجيال والتقنيات الحديثة، مع الحرص على مصادر محلية للمكونات.",
+    aboutP3: "الاستقبال: +251 11 000 0000 · info@grandmeridian-example.com",
+    aboutNote: "(هذا نص مثال فقط — استبدله بتاريخ فندقك الحقيقي ومعلومات التواصل.)",
+    payTitle: "ادفع لطلبك", continuePay: "المتابعة إلى الدفع",
+    instrTitle:"أكمل الدفع", amountDue:"المبلغ المستحق", sendTo:"أرسل الدفعة إلى", accountLabel:"رقم الحساب",
+    phoneLabel:"رقم تيليبر", walletLabel:"عنوان المحفظة", instrNote:"أرسل الدفعة عبر تطبيق البنك أو تيليبر، ثم اضغط أدناه.",
+    sentBtn:"لقد أرسلت الدفعة", verifying:"جارٍ التحقق من الدفع…", verifyNote:"عادة ما يستغرق هذا بضع ثوانٍ.",
+    screenshotLabel:"ارفع لقطة شاشة لتأكيد الدفع",
+    txnRefLabel:"رقم مرجع المعاملة (من إيصالك)", txnAmountLabel:"المبلغ المدفوع (من إيصالك)",
+    receiptTitle:"الإيصال", rOrder:"الطلب", rTable:"الطاولة", rMethod:"طريقة الدفع", rRef:"المرجع", rGuest:"الضيف", rTotal:"الإجمالي", rDate:"التاريخ", rStatus:"الحالة", doneBtn:"تم",
+    tpTitle:"في أي طاولة أنت؟", tpSub:"اختر طاولتك للمتابعة", tpTaken:"محجوزة",
+    pinTitle:"أدخل رمز الموظف",
+    cats: {breakfast:"الفطور", lunch:"الغداء", dinner:"العشاء", starters:"المقبلات", mains:"الأطباق الرئيسية", desserts:"الحلويات", drinks:"المشروبات", specials:"عروض خاصة"}
+  }
+};
+
+const staffMembers = [
+  {name:"Selam T.", color:"#5c1a2e"}, {name:"Dawit A.", color:"#a8763f"},
+  {name:"Hana M.", color:"#3d4a4a"}, {name:"Yonas B.", color:"#8e3a52"}
+];
+
+const paymentMethods = [
+  {id:"cbe", label:"CBE", logo:"🏦"}, {id:"abyssinia", label:"Bank of Abyssinia", logo:"🏦"},
+  {id:"telebirr", label:"Telebirr", logo:"📱"}, {id:"dashen", label:"Dashen Bank", logo:"🏦"},
+  {id:"awash", label:"Awash Bank", logo:"🏦"}, {id:"coop", label:"Coop Bank of Oromia", logo:"🏦"},
+  {id:"wegagen", label:"Wegagen Bank", logo:"🏦"}, {id:"zemen", label:"Zemen Bank", logo:"🏦"},
+  {id:"nib", label:"Nib Bank", logo:"🏦"}, {id:"hibret", label:"Hibret Bank", logo:"🏦"},
+  {id:"bunna", label:"Bunna Bank", logo:"🏦"}, {id:"crypto", label:"Crypto (BTC/USDT)", logo:"₿"}
+];
+
+const merchantDetails = {
+  cbe: {type:"bank", account:"1000 2345 6789 0", name:"Grand Meridian Hotel PLC"},
+  abyssinia: {type:"bank", account:"0198 7654 3210", name:"Grand Meridian Hotel PLC"},
+  telebirr: {type:"mobile", phone:"0911 22 33 44", name:"Grand Meridian Hotel"},
+  dashen: {type:"bank", account:"0512 3456 7891", name:"Grand Meridian Hotel PLC"},
+  awash: {type:"bank", account:"0134 5678 9012", name:"Grand Meridian Hotel PLC"},
+  coop: {type:"bank", account:"0233 4455 6677", name:"Grand Meridian Hotel PLC"},
+  wegagen: {type:"bank", account:"0345 6677 8899", name:"Grand Meridian Hotel PLC"},
+  zemen: {type:"bank", account:"0456 7788 9900", name:"Grand Meridian Hotel PLC"},
+  nib: {type:"bank", account:"0567 8899 0011", name:"Grand Meridian Hotel PLC"},
+  hibret: {type:"bank", account:"0678 9900 1122", name:"Grand Meridian Hotel PLC"},
+  bunna: {type:"bank", account:"0789 0011 2233", name:"Grand Meridian Hotel PLC"},
+  crypto: {type:"crypto", address:"bc1qexample0000hotel0000wallet00xyz", name:"Grand Meridian Hotel — BTC/USDT (TRC20)"}
+};
+function genRef(){ return 'GM-'+Math.floor(100000+Math.random()*900000); }
+let pendingOrder = null;
+let pendingScreenshot = null;
+let selectedPayMethod = null;
+let cart = {};
+const orders = [];
+let orderSeq = 0;
+
+const venues = [
+  {id:"restaurant", name:{en:"Restaurant", am:"ምግብ ቤት", ar:"المطعم"}, hours:"7am – 11pm"},
+  {id:"pool", name:{en:"Pool Bar", am:"የመዋኛ ገንዳ ባር", ar:"بار المسبح"}, hours:"10am – 7pm"},
+  {id:"room", name:{en:"Room Service", am:"የክፍል አገልግሎት", ar:"خدمة الغرف"}, hours:"24 hours"},
+];
+
+const items = [
+  {id:1, cat:"breakfast", venue:"room", tags:["V","GF"], name:{en:"Fig & Honey Yogurt", am:"ዮጎርት በበለስና ማር", ar:"زبادي بالتين والعسل"}, desc:{en:"Greek yogurt, fresh fig, wild honey", am:"የግሪክ ዮጎርት፣ ትኩስ በለስ፣ የዱር ማር", ar:"زبادي يوناني، تين طازج، عسل بري"}, price:9, sold:false},
+  {id:2, cat:"breakfast", venue:"room", tags:["Halal"], name:{en:"Shakshuka", am:"ሻክሹካ", ar:"شكشوكة"}, desc:{en:"Baked eggs, tomato, cumin, flatbread", am:"የተጋገረ እንቁላል፣ ቲማቲም፣ ኩሚን፣ ዳቦ", ar:"بيض مخبوز، طماطم، كمون، خبز رقيق"}, price:14, sold:false},
+  {id:3, cat:"starters", venue:"restaurant", tags:["V","GF"], name:{en:"Burrata & Heirloom Tomato", am:"ቡራታ ከቲማቲም ጋር", ar:"بوراتا مع طماطم موروثة"}, desc:{en:"Basil oil, aged balsamic", am:"የባሲል ዘይት፣ ያረጀ ባልሳሚክ", ar:"زيت الريحان، بلسميك معتق"}, price:18, sold:false},
+  {id:4, cat:"starters", venue:"restaurant", tags:["GF"], name:{en:"Charred Octopus", am:"የተጠበሰ ኦክቶፐስ", ar:"أخطبوط مشوي"}, desc:{en:"Smoked paprika, lemon, olive oil", am:"የተጨሰ ፓፕሪካ፣ ሎሚ፣ የወይራ ዘይት", ar:"بابريكا مدخنة، ليمون، زيت زيتون"}, price:22, sold:true},
+  {id:5, cat:"mains", venue:"restaurant", tags:["GF","Halal"], name:{en:"Saffron Seabass", am:"ባህር ዓሳ በዘፍራን", ar:"قاروص بالزعفران"}, desc:{en:"Roasted fennel, citrus butter", am:"የተጠበሰ ፌኔል፣ የሎሚ ቅቤ", ar:"شمر مشوي، زبدة الحمضيات"}, price:38, sold:false},
+  {id:6, cat:"mains", venue:"restaurant", tags:["Halal"], name:{en:"Wagyu Sirloin", am:"ዋግዩ ስቴክ", ar:"واغيو ستيك"}, desc:{en:"Truffle jus, confit potato", am:"የትሪፍል ጭማቂ፣ የተጠበሰ ድንች", ar:"صلصة الكمأ، بطاطس مطهوة ببطء"}, price:56, sold:false},
+  {id:7, cat:"lunch", venue:"pool", tags:["V","Halal"], name:{en:"Levantine Mezze Board", am:"የሜዜ ሰሌዳ", ar:"طبق مقبلات شامية"}, desc:{en:"Hummus, mutabal, labneh, pita", am:"ሁመስ፣ ሙተበል፣ ላብነ፣ ፒታ", ar:"حمص، متبل، لبنة، خبز"}, price:24, sold:false},
+  {id:8, cat:"dinner", venue:"restaurant", tags:["Halal","GF"], name:{en:"Slow Roast Lamb Shoulder", am:"የበግ ትከሻ", ar:"كتف خروف مطهو ببطء"}, desc:{en:"Preserved lemon, herb jus", am:"የተጠበቀ ሎሚ፣ የቅጠል ጭማቂ", ar:"ليمون مخلل، صلصة أعشاب"}, price:44, sold:false},
+  {id:9, cat:"desserts", venue:"restaurant", tags:["V"], name:{en:"Pistachio Kunafa", am:"ኩናፋ በፒስታችዮ", ar:"كنافة بالفستق"}, desc:{en:"Rosewater syrup, clotted cream", am:"የጽጌረዳ ውሃ ሽሮፕ፣ ክሬም", ar:"شراب ماء الورد، قشطة"}, price:13, sold:false},
+  {id:10, cat:"desserts", venue:"room", tags:["V"], name:{en:"Dark Chocolate Fondant", am:"ጥቁር ቸኮሌት ፎንዳንት", ar:"فوندان الشوكولاتة الداكنة"}, desc:{en:"Molten center, vanilla bean ice cream", am:"ፈሳሽ ውስጥ፣ የቫኒላ አይስክሬም", ar:"مركز سائل، آيس كريم الفانيليا"}, price:12, sold:false},
+  {id:11, cat:"drinks", venue:"pool", tags:["V","GF"], name:{en:"Rose Cardamom Fizz", am:"ጽጌረዳ ካርዳሞም ፊዝ", ar:"فيز الورد والهيل"}, desc:{en:"Sparkling, non-alcoholic", am:"ጋዝ ያለው፣ ያለ አልኮል", ar:"غازي، بدون كحول"}, price:8, sold:false},
+  {id:12, cat:"specials", venue:"restaurant", tags:["Halal"], name:{en:"Chef's Tasting Plate", am:"የሼፍ ቅምሻ ሳህን", ar:"طبق تذوق الشيف"}, desc:{en:"Rotating daily selection", am:"በየቀኑ የሚቀያየር ምርጫ", ar:"تشكيلة يومية متغيرة"}, price:48, sold:false},
+];
+
+const artPalette = {
+  breakfast:["#e0a94a","#f2d999"], lunch:["#a8763f","#d9b57e"], dinner:["#5c1a2e","#8a3a52"],
+  starters:["#7a5230","#c79a63"], mains:["#7a1f2f","#a8763f"], desserts:["#8e3a52","#d9a4b8"],
+  drinks:["#3d4a4a","#7a9494"], specials:["#c9a24b","#e6c877"]
+};
+function dishArt(cat, seedNum){
+  const [c1,c2] = artPalette[cat] || ["#7e9a86","#c9c6bb"];
+  const rough = seedNum % 2 === 0 ? "rough1" : "rough2";
+  const cx = 90 + (seedNum*13 % 20), cy = 50 + (seedNum*7 % 14);
+  return `<svg viewBox="0 0 220 120" preserveAspectRatio="xMidYMid slice">
+    <rect width="220" height="120" fill="#f6f1e7"/>
+    <ellipse cx="${cx}" cy="70" rx="70" ry="26" fill="${c2}" opacity="0.35" filter="url(#${rough})"/>
+    <ellipse cx="${cx-10}" cy="58" rx="46" ry="30" fill="${c1}" opacity="0.85" filter="url(#${rough})"/>
+    <ellipse cx="${cx+22}" cy="66" rx="20" ry="14" fill="${c2}" opacity="0.9" filter="url(#${rough})"/>
+    <circle cx="${cx-30}" cy="40" r="7" fill="${c2}" opacity="0.7" filter="url(#${rough})"/>
+    <ellipse cx="110" cy="98" rx="95" ry="9" fill="#1c1b17" opacity="0.06"/>
+  </svg>`;
+}
+
+let lang = "en";
+let staffMode = false;
+let activeCat = "all";
+
+let currentTable = null;
+const tableStatus = [
+  {n:1, taken:true}, {n:2, taken:true}, {n:3, taken:false}, {n:4, taken:true},
+  {n:5, taken:true}, {n:6, taken:true}, {n:7, taken:true}, {n:8, taken:true},
+  {n:9, taken:false}, {n:10, taken:true}, {n:11, taken:true}, {n:12, taken:true},
+  {n:13, taken:true}, {n:14, taken:false}, {n:15, taken:true}, {n:16, taken:true}
+];
+
+function scanIn(){
+  document.getElementById('introCard').classList.add('flipped');
+  setTimeout(()=>{
+    renderTablePicker();
+    document.getElementById('tablePicker').classList.add('show');
+  }, 350);
+}
+
+function renderTablePicker(){
+  const t = copy[lang];
+  document.getElementById('tpTitle').textContent = t.tpTitle;
+  document.getElementById('tpSub').textContent = t.tpSub;
+  document.getElementById('tpGrid').innerHTML = tableStatus.map(tb => `
+    <button class="tp-btn ${tb.taken?'taken':''}" ${tb.taken?'disabled':`onclick="selectTable(${tb.n})"`}>
+      ${tb.n}
+      <span class="tp-status">${tb.taken ? t.tpTaken : ''}</span>
+    </button>`).join('');
+}
+
+function selectTable(n){
+  currentTable = n;
+  document.getElementById('tablePicker').classList.remove('show');
+  setTimeout(()=>{
+    document.getElementById('tablePicker').style.display='none';
+    document.getElementById('app').classList.add('show');
+    render();
+  }, 250);
+}
+
+let activeVenue = "all";
+
+function render(){
+  const t = copy[lang];
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl':'ltr');
+  document.getElementById('hotelNameText').textContent = t.hotel;
+  document.getElementById('tableText').textContent = t.tableLabel(currentTable || '—');
+  document.getElementById('staffLabel').textContent = t.staffLabel;
+  document.getElementById('staffBannerText').textContent = t.staffBanner;
+  document.getElementById('aboutBtnLabel').textContent = t.aboutBtn;
+  document.getElementById('suggestTitle').textContent = t.suggestTitle;
+  document.getElementById('pillLabel').textContent = t.viewOrder;
+  document.getElementById('onDutyTitle').textContent = t.onDuty;
+  document.getElementById('liveOrdersTitle').textContent = t.liveOrders;
+
+  const venuesEl = document.getElementById('venues');
+  venuesEl.innerHTML = `<div class="venue ${activeVenue==='all'?'active':''}" onclick="setVenue('all')"><div class="vname">${lang==='ar'?'الكل':(lang==='am'?'ሁሉም':'All venues')}</div><div class="vhours">&nbsp;</div></div>` +
+    venues.map(v => `<div class="venue ${activeVenue===v.id?'active':''}" onclick="setVenue('${v.id}')"><div class="vname">${v.name[lang]}</div><div class="vhours">${v.hours}</div></div>`).join('');
+
+  const cats = ["all", ...Object.keys(t.cats)];
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = cats.map(c => `<div class="tab ${activeCat===c?'active':''}" onclick="setCat('${c}')">${c==='all' ? (lang==='ar'?'الكل':(lang==='am'?'ሁሉም':'All')) : t.cats[c]}</div>`).join('');
+
+  const gridEl = document.getElementById('grid');
+  const list = items.filter(i => (activeCat==='all' || i.cat===activeCat) && (activeVenue==='all' || i.venue===activeVenue));
+  gridEl.innerHTML = list.map(i => {
+    const qty = cart[i.id] || 0;
+    return `
+    <div class="item ${i.sold?'sold':''}">
+      <div class="art">${dishArt(i.cat, i.id)}<div class="sold-badge">${t.sold}</div></div>
+      <div class="body">
+        <div class="name">${i.name[lang]}</div>
+        <div class="desc">${i.desc[lang]}</div>
+        <div class="tags">${i.tags.map(tag=>`<span class="tag">${tag}</span>`).join('')}</div>
+        <div class="row">
+          <input class="price" value="${fmtPrice(i.price)}" ${staffMode?'':'readonly'} data-id="${i.id}" onchange="editPrice(event)">
+          ${staffMode
+            ? `<button class="sold-toggle ${i.sold?'is-sold':''}" onclick="toggleSold(${i.id})">${i.sold?t.markBack:t.markSold}</button>`
+            : (qty>0
+                ? `<div class="stepper"><button onclick="changeQty(${i.id},-1)">−</button><span>${qty}</span><button onclick="changeQty(${i.id},1)">+</button></div>`
+                : `<button class="order-btn" ${i.sold?'disabled':''} onclick="changeQty(${i.id},1)">${i.sold?t.sold:t.order}</button>`)
+          }
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  renderSuggestions();
+  updatePill();
+  document.getElementById('staffDash').style.display = staffMode ? 'block' : 'none';
+  updateOrderBadge();
+  if(staffMode) renderStaffDash();
+}
+
+function renderSuggestions(){
+  const t = copy[lang];
+  const picks = items.filter(i=>!i.sold).slice().sort((a,b)=>b.price-a.price).slice(0,4);
+  document.getElementById('suggestRow').innerHTML = picks.map(i=>`
+    <div class="suggest-card">
+      <div class="thumb">${dishArt(i.cat, i.id)}</div>
+      <div class="sn">${i.name[lang]}</div>
+      <div class="sp">${fmtPrice(i.price)}</div>
+    </div>`).join('');
+}
+
+function setCat(c){ activeCat = c; render(); }
+function setVenue(v){ activeVenue = v; render(); }
+
+let staffPin = "258013";
+let securityQ = "What year was Grand Meridian founded?";
+let securityA = "1987";
+let pinEntry = "";
+let pinContext = "staff"; // 'staff' or 'admin'
+const PIN_LEN = 6;
+const hotelInfo = {
+  sub: "Grand Meridian Hotel — since 1987",
+  p1: "Founded in 1987 on the old caravan road overlooking the city, Grand Meridian began as a modest 20-room guesthouse before growing into the landmark it is today.",
+  p2: "Our kitchen blends traditional recipes passed down through generations with modern technique, sourcing ingredients from local farms whenever possible.",
+  p3: "Front desk: +251 11 000 0000 · info@grandmeridian-example.com"
+};
+let nextItemId = 100;
+let currency = "ETB";
+let usdRate = 135; // ETB per 1 USD — editable in Admin > Security
+
+function fmtPrice(etbAmount){
+  if(currency === 'USD'){
+    return '$' + (etbAmount / usdRate).toFixed(2);
+  }
+  const clean = Number.isInteger(etbAmount) ? etbAmount : etbAmount.toFixed(2);
+  return clean + ' ETB';
+}
+
+function toggleStaff(){
+  if(staffMode){
+    staffMode = false;
+    document.getElementById('staffSwitch').classList.remove('on');
+    document.getElementById('staffBanner').classList.remove('show');
+    render();
+    return;
+  }
+  pinContext = "staff";
+  pinEntry = "";
+  document.getElementById('pinError').textContent = "";
+  renderPinPad();
+  openModal('pin');
+}
+
+function requestAdmin(){
+  pinContext = "admin";
+  pinEntry = "";
+  document.getElementById('pinError').textContent = "";
+  renderPinPad();
+  openModal('pin');
+}
+
+function renderPinPad(){
+  const t = copy[lang];
+  document.getElementById('pinTitle').textContent = t.pinTitle || "Staff PIN";
+  document.getElementById('pinDots').innerHTML = Array.from({length:PIN_LEN}).map((_,i)=>
+    `<span class="pin-dot ${i<pinEntry.length?'filled':''}"></span>`).join('');
+  const keys = ['1','2','3','4','5','6','7','8','9','','0','⌫'];
+  document.getElementById('pinKeys').innerHTML = keys.map(k=>{
+    if(k==='') return `<div></div>`;
+    if(k==='⌫') return `<button class="pin-key wide" onclick="pinBackspace()">⌫</button>`;
+    return `<button class="pin-key" onclick="pinPress('${k}')">${k}</button>`;
+  }).join('');
+}
+
+function pinPress(d){
+  if(pinEntry.length >= PIN_LEN) return;
+  pinEntry += d;
+  renderPinPad();
+  if(pinEntry.length === PIN_LEN){
+    setTimeout(()=>{
+      if(pinEntry === staffPin){
+        closeModal();
+        if(pinContext === 'staff'){
+          staffMode = true;
+          document.getElementById('staffSwitch').classList.add('on');
+          document.getElementById('staffBanner').classList.add('show');
+          render();
+        } else {
+          openAdmin();
+        }
+      } else {
+        document.getElementById('pinError').textContent = lang==='ar' ? 'رمز خاطئ' : (lang==='am' ? 'የተሳሳተ ኮድ' : 'Incorrect PIN');
+        pinEntry = "";
+        renderPinPad();
+      }
+    }, 150);
+  }
+}
+function pinBackspace(){ pinEntry = pinEntry.slice(0,-1); renderPinPad(); }
+function cancelPin(){ pinEntry = ""; closeModal(); }
+
+function startRecovery(){
+  document.getElementById('secQText').textContent = securityQ;
+  document.getElementById('secAnswer').value = "";
+  document.getElementById('recoverError').textContent = "";
+  openModal('recover');
+}
+function checkRecovery(){
+  const ans = document.getElementById('secAnswer').value.trim().toLowerCase();
+  if(ans && ans === securityA.trim().toLowerCase()){
+    closeModal();
+    document.getElementById('newPin1').value = "";
+    document.getElementById('newPin2').value = "";
+    document.getElementById('newPinError').textContent = "";
+    openModal('newpin');
+  } else {
+    document.getElementById('recoverError').textContent = "That doesn't match our records.";
+  }
+}
+function setNewPin(){
+  const p1 = document.getElementById('newPin1').value.trim();
+  const p2 = document.getElementById('newPin2').value.trim();
+  const err = document.getElementById('newPinError');
+  if(!/^\d{6}$/.test(p1)){ err.textContent = "PIN must be exactly 6 digits."; return; }
+  if(p1 !== p2){ err.textContent = "PINs don't match."; return; }
+  staffPin = p1;
+  closeModal();
+  showToast("PIN updated successfully");
+}
+
+function toggleSold(id){
+  const t = copy[lang];
+  const item = items.find(i=>i.id===id);
+  item.sold = !item.sold;
+  render();
+  showToast(item.sold ? t.toastSold(item.name[lang]) : t.toastBack(item.name[lang]));
+}
+
+function editPrice(e){
+  const t = copy[lang];
+  const id = Number(e.target.dataset.id);
+  const item = items.find(i=>i.id===id);
+  const raw = parseFloat(e.target.value.replace(/ETB|\$/gi,'').trim());
+  if(!isNaN(raw)){
+    item.price = currency === 'USD' ? Math.round(raw * usdRate) : raw;
+  }
+  render();
+  showToast(t.toastPrice(item.name[lang]));
+}
+
+function changeQty(id, delta){
+  const t = copy[lang];
+  const item = items.find(i=>i.id===id);
+  const cur = cart[id] || 0;
+  const next = Math.max(0, cur + delta);
+  if(next === 0) delete cart[id]; else cart[id] = next;
+  render();
+  if(delta > 0) showToast(t.toastOrdered(item.name[lang]));
+}
+
+function updatePill(){
+  const count = Object.values(cart).reduce((a,b)=>a+b,0);
+  const pill = document.getElementById('orderPill');
+  document.getElementById('pillCount').textContent = count;
+  pill.classList.toggle('show', count>0);
+}
+
+/* ---- modals ---- */
+function openModal(name){
+  document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show'));
+  document.getElementById('modal-'+name).classList.add('show');
+  document.getElementById('modalBackdrop').classList.add('show');
+  if(name==='cart') renderCartModal();
+  if(name==='pay') renderPayModal();
+  if(name==='about') renderAboutModal();
+}
+function closeModal(){
+  document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show'));
+  document.getElementById('modalBackdrop').classList.remove('show');
+}
+
+function renderCartModal(){
+  const t = copy[lang];
+  document.getElementById('cartTitle').textContent = t.drawerTitle;
+  document.getElementById('cartTotalLabel').textContent = t.total;
+  document.getElementById('goToPayBtn').textContent = t.continuePay;
+  const ids = Object.keys(cart);
+  const listEl = document.getElementById('cartList');
+  if(ids.length===0){
+    listEl.innerHTML = `<div class="empty-note">${t.drawerEmpty}</div>`;
+    document.getElementById('goToPayBtn').disabled = true;
+  } else {
+    document.getElementById('goToPayBtn').disabled = false;
+    listEl.innerHTML = ids.map(id=>{
+      const item = items.find(i=>i.id==id);
+      return `<div class="cart-row"><div class="thumb">${dishArt(item.cat,item.id)}</div><div class="cname">${item.name[lang]} × ${cart[id]}</div><div>${fmtPrice(item.price*cart[id])}</div></div>`;
+    }).join('');
+  }
+  const total = ids.reduce((s,id)=> s + items.find(i=>i.id==id).price*cart[id], 0);
+  document.getElementById('cartTotalAmt').textContent = fmtPrice(total);
+}
+
+function renderPayModal(){
+  const t = copy[lang];
+  document.getElementById('payTitle').textContent = t.payTitle;
+  document.getElementById('lblName').textContent = t.lblName;
+  document.getElementById('lblPhone').textContent = t.lblPhone;
+  document.getElementById('payMethodsTitle').textContent = t.payMethodsTitle;
+  document.getElementById('payConfirmBtn').textContent = t.payConfirm;
+  document.getElementById('payGrid').innerHTML = paymentMethods.map(m=>`
+    <div class="pay-option ${selectedPayMethod===m.id?'active':''}" onclick="selectPayMethod('${m.id}')">
+      <div class="plogo">${m.logo}</div>${m.label}
+    </div>`).join('');
+  checkPayReady();
+}
+function selectPayMethod(id){ selectedPayMethod = id; renderPayModal(); }
+function checkPayReady(){
+  const name = document.getElementById('guestName').value.trim();
+  const phone = document.getElementById('guestPhone').value.trim();
+  document.getElementById('payConfirmBtn').disabled = !(name && phone && selectedPayMethod);
+}
+document.addEventListener('input', (e)=>{
+  if(e.target.id==='guestName' || e.target.id==='guestPhone') checkPayReady();
+});
+
+function copyAccount(value, btn){
+  const original = btn.textContent;
+  navigator.clipboard.writeText(value).then(()=>{
+    btn.textContent = '✓ Copied';
+    setTimeout(()=>{ btn.textContent = original; }, 1500);
+  }).catch(()=>{
+    showToast(value);
+  });
+}
+
+function goToInstructions(){
+  const t = copy[lang];
+  const ids = Object.keys(cart);
+  if(ids.length===0 || !selectedPayMethod) return;
+  const guestName = document.getElementById('guestName').value.trim();
+  const guestPhone = document.getElementById('guestPhone').value.trim();
+  const total = ids.reduce((s,id)=> s + items.find(i=>i.id==id).price*cart[id], 0);
+  const method = paymentMethods.find(m=>m.id===selectedPayMethod);
+  const merchant = merchantDetails[selectedPayMethod];
+
+  pendingOrder = {
+    items: ids.map(id=>{ const item = items.find(i=>i.id==id); return {name:item.name.en, qty:cart[id], price:item.price}; }),
+    total, table: `Table ${currentTable}`, method:method.label, guestName, guestPhone,
+    staff: null,
+    ref: genRef(), time:new Date()
+  };
+
+  document.getElementById('instrTitle').textContent = t.instrTitle;
+  document.getElementById('instrAmountLabel').textContent = t.amountDue;
+  document.getElementById('instrAmount').textContent = total + ' ETB';
+  document.getElementById('instrAmountLabel').textContent = t.amountDue + (currency==='USD' ? ` (≈ $${(total/usdRate).toFixed(2)})` : '');
+  document.getElementById('instrNote').textContent = t.instrNote;
+  document.getElementById('sentPaymentBtn').textContent = t.sentBtn;
+  document.getElementById('screenshotLabel').textContent = t.screenshotLabel;
+  document.getElementById('txnRefLabel').textContent = t.txnRefLabel;
+  document.getElementById('txnAmountLabel').textContent = t.txnAmountLabel;
+  document.getElementById('sentPaymentBtn').disabled = true;
+  pendingScreenshot = null;
+  document.getElementById('screenshotInput').value = "";
+  document.getElementById('screenshotPreviewWrap').style.display = 'none';
+  document.getElementById('txnRef').value = "";
+  document.getElementById('txnAmount').value = "";
+  document.getElementById('amountMismatchMsg').textContent = "";
+
+  let boxHtml = '';
+  if(merchant.type === 'mobile'){
+    const ussd = `*127*${merchant.phone.replace(/\s/g,'')}*${Math.round(total)}#`;
+    boxHtml = `<div class="mlabel">${t.phoneLabel}</div><div class="mvalue">${merchant.phone}</div><div class="mname">${merchant.name}</div>
+      <a href="tel:${encodeURIComponent(ussd)}" class="pay-confirm" style="display:block; margin-top:12px; text-decoration:none; text-align:center;">📲 ${lang==='ar'?'اتصل بكود USSD':(lang==='am'?'የUSSD ኮድ ደውል':'Dial USSD code')}</a>`;
+  } else if(merchant.type === 'bank'){
+    boxHtml = `<div class="mlabel">${t.accountLabel} — ${method.label}</div><div class="mvalue" id="acctVal">${merchant.account}</div><div class="mname">${merchant.name}</div>
+      <button class="pay-confirm" style="margin-top:12px;" onclick="copyAccount('${merchant.account}', this)">📋 ${lang==='ar'?'نسخ رقم الحساب':(lang==='am'?'የሂሳብ ቁጥር ቅዳ':'Copy account number')}</button>`;
+  } else {
+    boxHtml = `<div class="mlabel">${t.walletLabel}</div><div class="mvalue" style="font-size:12px; word-break:break-all;">${merchant.address}</div><div class="mname">${merchant.name}</div>
+      <button class="pay-confirm" style="margin-top:12px;" onclick="copyAccount('${merchant.address}', this)">📋 ${lang==='ar'?'نسخ العنوان':(lang==='am'?'አድራሻ ቅዳ':'Copy wallet address')}</button>`;
+  }
+  document.getElementById('merchantBox').innerHTML = boxHtml;
+
+  openModal('instructions');
+}
+
+function onScreenshotSelected(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    pendingScreenshot = ev.target.result;
+    document.getElementById('screenshotPreview').src = pendingScreenshot;
+    document.getElementById('screenshotPreviewWrap').style.display = 'block';
+    checkProofReady();
+  };
+  reader.readAsDataURL(file);
+}
+
+function checkProofReady(){
+  const msg = document.getElementById('amountMismatchMsg');
+  const ref = document.getElementById('txnRef').value.trim();
+  const amtStr = document.getElementById('txnAmount').value.trim();
+  const amt = parseFloat(amtStr);
+  const btn = document.getElementById('sentPaymentBtn');
+
+  if(!pendingScreenshot || !ref || ref.length < 5 || !amtStr || isNaN(amt)){
+    btn.disabled = true;
+    msg.textContent = "";
+    return;
+  }
+  if(Math.abs(amt - pendingOrder.total) > 0.01){
+    btn.disabled = true;
+    msg.textContent = `Amount doesn't match your order total (${pendingOrder.total.toFixed(2)} ETB) — check your receipt.`;
+    return;
+  }
+  msg.textContent = "";
+  btn.disabled = false;
+}
+
+function markPaymentSent(){
+  const t = copy[lang];
+  const btn = document.getElementById('sentPaymentBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span>${t.verifying}`;
+  document.getElementById('instrNote').textContent = t.verifyNote;
+
+  setTimeout(()=>{
+    orderSeq++;
+    orders.push({
+      seq: orderSeq, rawTime: pendingOrder.time,
+      time: pendingOrder.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),
+      items: pendingOrder.items.map(it=>({name:it.name, qty:it.qty})),
+      status:'new', table: pendingOrder.table,
+      paid:true, method: pendingOrder.method, guestName: pendingOrder.guestName,
+      guestPhone: pendingOrder.guestPhone, staff: pendingOrder.staff, ref: pendingOrder.ref, screenshot: pendingScreenshot,
+      txnRef: document.getElementById('txnRef').value.trim(), txnAmount: document.getElementById('txnAmount').value.trim()
+    });
+    updateOrderBadge();
+
+    showReceipt();
+
+    cart = {}; selectedPayMethod = null;
+    document.getElementById('guestName').value=''; document.getElementById('guestPhone').value='';
+    render();
+  }, 1600);
+}
+
+function showReceipt(){
+  const t = copy[lang];
+  document.getElementById('receiptTitle').textContent = t.receiptTitle;
+  const o = pendingOrder;
+  const rows = o.items.map(it=>`<div class="rline"><span>${it.qty}× ${it.name}</span><span>${(it.price*it.qty).toFixed(2)} ETB</span></div>`).join('');
+  document.getElementById('receiptBody').innerHTML = `
+    <div class="rline"><span>${t.rOrder}</span><span>${o.ref}</span></div>
+    <div class="rline"><span>${t.rTable}</span><span>${o.table}</span></div>
+    <div class="rline"><span>${t.rGuest}</span><span>${o.guestName}</span></div>
+    <div class="rline"><span>${t.rMethod}</span><span>${o.method}</span></div>
+    <div class="rline"><span>${t.rDate}</span><span>${o.time.toLocaleDateString()} ${o.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</span></div>
+    <div class="rline"><span>${t.rStatus}</span><span>${t.paid}</span></div>
+    <div style="margin:10px 0 4px; font-weight:600;">${t.rOrder}:</div>
+    ${rows}
+    <div class="rline rtotal"><span>${t.rTotal}</span><span>${o.total.toFixed(2)} ETB</span></div>
+  `;
+  openModal('receipt');
+  showToast(t.toastSent);
+}
+
+function renderAboutModal(){
+  const t = copy[lang];
+  document.getElementById('aboutTitle').textContent = t.aboutTitle;
+  document.getElementById('aboutSub').textContent = hotelInfo.sub;
+  document.getElementById('aboutP1').textContent = hotelInfo.p1;
+  document.getElementById('aboutP2').textContent = hotelInfo.p2;
+  document.getElementById('aboutP3').textContent = hotelInfo.p3;
+  document.getElementById('aboutNote').textContent = t.aboutNote;
+}
+
+/* ---- staff dashboard ---- */
+function renderStaffDash(){
+  const t = copy[lang];
+  document.getElementById('onDutyRow').innerHTML = staffMembers.map(s=>{
+    const initials = s.name.split(' ').map(w=>w[0]).join('');
+    return `<div class="staff-person"><div class="staff-avatar" style="background:${s.color};">${initials}</div><div class="sname">${s.name}</div></div>`;
+  }).join('');
+
+  const oel = document.getElementById('ordersWrap');
+  const queue = orders.slice().sort((a,b)=> a.seq - b.seq); // FIFO: oldest first
+  oel.innerHTML = queue.length===0 ? `<div class="empty-note">${t.noOrders}</div>` : queue.map((o)=>{
+    const realIdx = orders.indexOf(o);
+    const statusLabel = {new:t.statusNew, cooking:t.statusCooking, ready:t.statusReady, served:t.statusServed}[o.status];
+    let pipeline = '';
+    if(o.status==='new') pipeline = `<button class="status-pipeline-btn step-new" onclick="advanceStatus(${realIdx})" style="width:100%; margin-top:8px; border:none; border-radius:8px; padding:8px; font-weight:700; font-size:11px; cursor:pointer; background:#3d6b8a; color:#fff;">${t.startCooking}</button>`;
+    else if(o.status==='cooking') pipeline = `<button onclick="advanceStatus(${realIdx})" style="width:100%; margin-top:8px; border:none; border-radius:8px; padding:8px; font-weight:700; font-size:11px; cursor:pointer; background:#3d6b4f; color:#fff;">${t.markReady}</button>`;
+    else if(o.status==='ready') pipeline = `<button onclick="advanceStatus(${realIdx})" style="width:100%; margin-top:8px; border:none; border-radius:8px; padding:8px; font-weight:700; font-size:11px; cursor:pointer; background:#6b6a63; color:#fff;">${t.markServed}</button>`;
+    return `
+    <div class="order-card status-${o.status}">
+      <div class="oh"><span><span class="order-seq">#${o.seq}</span>${o.table} · ${o.time}</span><span class="ostatus ${o.status}">${statusLabel}</span></div>
+      <div class="oitems">${o.items.map(it=>`${it.qty}× ${it.name}`).join(', ')}</div>
+      <div style="display:flex; align-items:center; gap:6px; margin-top:6px;">
+        <span class="pay-badge ${o.paid?'paid':'unpaid'}">${o.paid?t.paid:t.unpaid}</span>
+        ${o.paid ? `<span class="order-contact">${o.method}</span>` : ''}
+      </div>
+      ${o.guestName ? `<div class="order-contact"><strong>${o.guestName}</strong> · ${o.guestPhone}</div>` : ''}
+      ${o.screenshot ? `<div style="margin-top:8px;"><div style="font-size:9.5px; color:#8b8a82; margin-bottom:4px;">Payment proof · Order ref ${o.ref}</div><img src="${o.screenshot}" style="width:100%; max-height:110px; object-fit:cover; border-radius:8px; border:1px solid var(--line); cursor:pointer;" onclick="window.open(this.src)"><div style="font-size:10.5px; margin-top:4px; display:flex; justify-content:space-between;"><span>Txn: <strong>${o.txnRef||'—'}</strong></span><span>Amt: <strong>$${o.txnAmount||'—'}</strong></span></div></div>` : ''}
+      <div class="order-assigned" style="margin-top:6px;">
+        <select onchange="assignStaff(${realIdx}, this.value)" style="font-size:10.5px; padding:4px 6px; border-radius:6px; border:1px solid var(--line); font-family:'Inter',sans-serif;">
+          <option value="" ${!o.staff?'selected':''}>${t.unassigned}</option>
+          ${staffMembers.map(s=>`<option value="${s.name}" ${o.staff===s.name?'selected':''}>${s.name}</option>`).join('')}
+        </select>
+      </div>
+      ${pipeline}
+    </div>`;
+  }).join('');
+
+  updateOrderBadge();
+}
+function assignStaff(idx, name){
+  orders[idx].staff = name || null;
+  renderStaffDash();
+}
+function advanceStatus(idx){
+  const order = orders[idx];
+  if(order.status==='new') order.status='cooking';
+  else if(order.status==='cooking') order.status='ready';
+  else if(order.status==='ready') order.status='served';
+  renderStaffDash();
+}
+function updateOrderBadge(){
+  const count = orders.filter(o=>o.status==='new').length;
+  ['notifBadge1','notifBadge2'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.textContent = count;
+    el.classList.toggle('show', count>0);
+  });
+}
+
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=> el.classList.remove('show'), 2200);
+}
+
+/* ================= ADMIN PANEL ================= */
+const adminTabsList = [
+  {id:"menu", label:"Menu Items"}, {id:"tables", label:"Tables"}, {id:"staff", label:"Staff"},
+  {id:"payments", label:"Payments"}, {id:"hotel", label:"Hotel Info"}, {id:"security", label:"Security"}
+];
+let activeAdminTab = "menu";
+
+function openAdmin(){
+  document.getElementById('adminOverlay').classList.add('show');
+  document.getElementById('adminTabs').innerHTML = adminTabsList.map(t=>
+    `<div class="admin-tab ${activeAdminTab===t.id?'active':''}" onclick="switchAdminTab('${t.id}')">${t.label}</div>`).join('');
+  renderAllAdminPanes();
+}
+function closeAdmin(){
+  document.getElementById('adminOverlay').classList.remove('show');
+  render();
+}
+function switchAdminTab(id){
+  activeAdminTab = id;
+  document.querySelectorAll('.admin-tab').forEach(t=> t.classList.remove('active'));
+  document.querySelectorAll('.admin-pane').forEach(p=> p.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.getElementById('pane-'+id).classList.add('active');
+}
+function adminSaved(){
+  const b = document.getElementById('saveBanner');
+  b.classList.add('show');
+  clearTimeout(window._saveTimer);
+  window._saveTimer = setTimeout(()=> b.classList.remove('show'), 1200);
+}
+function renderAllAdminPanes(){
+  renderAdminMenu(); renderAdminTables(); renderAdminStaff();
+  renderAdminPayments(); renderAdminHotel(); renderAdminSecurity();
+}
+
+/* --- Menu items --- */
+function renderAdminMenu(){
+  const catKeys = Object.keys(copy.en.cats);
+  document.getElementById('pane-menu').innerHTML = `
+    <div class="admin-section-title">Manage menu items</div>
+    ${items.map(i => `
+      <div class="admin-row">
+        <div class="arow-top">
+          <input type="text" value="${i.name.en}" data-field="name" data-id="${i.id}" oninput="adminEditItem(event)" placeholder="Item name">
+          <input type="number" value="${i.price}" data-field="price" data-id="${i.id}" oninput="adminEditItem(event)" style="max-width:80px;" placeholder="Price">
+        </div>
+        <input type="text" value="${i.desc.en}" data-field="desc" data-id="${i.id}" oninput="adminEditItem(event)" placeholder="Description" style="margin-bottom:8px;">
+        <select data-field="cat" data-id="${i.id}" onchange="adminEditItem(event)">
+          ${catKeys.map(c=>`<option value="${c}" ${i.cat===c?'selected':''}>${copy.en.cats[c]}</option>`).join('')}
+        </select>
+        <div class="tagchecks">
+          <label><input type="checkbox" data-tag="V" data-id="${i.id}" ${i.tags.includes('V')?'checked':''} onchange="adminToggleTag(event)"> Vegetarian</label>
+          <label><input type="checkbox" data-tag="GF" data-id="${i.id}" ${i.tags.includes('GF')?'checked':''} onchange="adminToggleTag(event)"> GF</label>
+          <label><input type="checkbox" data-tag="Halal" data-id="${i.id}" ${i.tags.includes('Halal')?'checked':''} onchange="adminToggleTag(event)"> Halal</label>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+          <label style="font-size:11px; display:flex; align-items:center; gap:5px;"><input type="checkbox" ${i.sold?'checked':''} onchange="adminToggleSold(${i.id})"> Sold out</label>
+          <button class="admin-mini-btn danger" onclick="adminDeleteItem(${i.id})">Delete</button>
+        </div>
+      </div>`).join('')}
+    <button class="admin-add-btn" onclick="adminAddItem()">+ Add new item</button>
+  `;
+}
+function adminEditItem(e){
+  const id = Number(e.target.dataset.id);
+  const field = e.target.dataset.field;
+  const item = items.find(i=>i.id===id);
+  if(field==='name'){ item.name.en = e.target.value; }
+  else if(field==='desc'){ item.desc.en = e.target.value; }
+  else if(field==='price'){ const v = parseFloat(e.target.value); if(!isNaN(v)) item.price = v; }
+  else if(field==='cat'){ item.cat = e.target.value; }
+  render(); adminSaved();
+}
+function adminToggleTag(e){
+  const id = Number(e.target.dataset.id);
+  const tag = e.target.dataset.tag;
+  const item = items.find(i=>i.id===id);
+  if(e.target.checked){ if(!item.tags.includes(tag)) item.tags.push(tag); }
+  else { item.tags = item.tags.filter(t=>t!==tag); }
+  render(); adminSaved();
+}
+function adminToggleSold(id){
+  const item = items.find(i=>i.id===id);
+  item.sold = !item.sold;
+  render(); renderAdminMenu(); adminSaved();
+}
+function adminDeleteItem(id){
+  const idx = items.findIndex(i=>i.id===id);
+  if(idx>-1) items.splice(idx,1);
+  renderAdminMenu(); render(); adminSaved();
+}
+function adminAddItem(){
+  nextItemId++;
+  items.push({id:nextItemId, cat:"specials", venue:"restaurant", tags:[],
+    name:{en:"New Dish", am:"አዲስ ምግብ", ar:"طبق جديد"},
+    desc:{en:"Description", am:"መግለጫ", ar:"وصف"}, price:0, sold:false});
+  renderAdminMenu(); render(); adminSaved();
+}
+
+/* --- Tables --- */
+function renderAdminTables(){
+  document.getElementById('pane-tables').innerHTML = `
+    <div class="admin-section-title">Manage tables</div>
+    ${tableStatus.map((tb,idx) => `
+      <div class="admin-row" style="display:flex; align-items:center; justify-content:space-between;">
+        <span style="font-family:'Fraunces',serif; font-weight:600;">Table ${tb.n}</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <label style="font-size:11px; display:flex; align-items:center; gap:5px;"><input type="checkbox" ${tb.taken?'checked':''} onchange="adminToggleTable(${idx})"> Taken</label>
+          <button class="admin-mini-btn danger" onclick="adminDeleteTable(${idx})">Delete</button>
+        </div>
+      </div>`).join('')}
+    <button class="admin-add-btn" onclick="adminAddTable()">+ Add table</button>
+  `;
+}
+function adminToggleTable(idx){ tableStatus[idx].taken = !tableStatus[idx].taken; renderAdminTables(); adminSaved(); }
+function adminDeleteTable(idx){ tableStatus.splice(idx,1); renderAdminTables(); adminSaved(); }
+function adminAddTable(){
+  const maxN = tableStatus.reduce((m,t)=>Math.max(m,t.n),0);
+  tableStatus.push({n:maxN+1, taken:false});
+  renderAdminTables(); adminSaved();
+}
+
+/* --- Staff --- */
+function renderAdminStaff(){
+  document.getElementById('pane-staff').innerHTML = `
+    <div class="admin-section-title">Manage staff on duty</div>
+    ${staffMembers.map((s,idx) => `
+      <div class="admin-row" style="display:flex; align-items:center; gap:10px;">
+        <div class="swatch" style="background:${s.color};"></div>
+        <input type="text" value="${s.name}" oninput="adminEditStaff(${idx}, this.value)" style="flex:1;">
+        <button class="admin-mini-btn danger" onclick="adminDeleteStaff(${idx})">Remove</button>
+      </div>`).join('')}
+    <button class="admin-add-btn" onclick="adminAddStaff()">+ Add staff member</button>
+  `;
+}
+function adminEditStaff(idx, val){ staffMembers[idx].name = val; adminSaved(); }
+function adminDeleteStaff(idx){ staffMembers.splice(idx,1); renderAdminStaff(); adminSaved(); }
+function adminAddStaff(){
+  const palette = ["#5c1a2e","#a8763f","#3d4a4a","#8e3a52","#7a1f2f","#c9a24b"];
+  staffMembers.push({name:"New Staff", color: palette[staffMembers.length % palette.length]});
+  renderAdminStaff(); adminSaved();
+}
+
+/* --- Payments --- */
+function renderAdminPayments(){
+  document.getElementById('pane-payments').innerHTML = `
+    <div class="admin-section-title">Manage payment accounts</div>
+    ${paymentMethods.map(m => {
+      const md = merchantDetails[m.id];
+      const fieldKey = md.type==='mobile' ? 'phone' : md.type==='bank' ? 'account' : 'address';
+      const fieldLabel = md.type==='mobile' ? 'Phone / short code' : md.type==='bank' ? 'Account number' : 'Wallet address';
+      return `
+      <div class="admin-row">
+        <div style="font-weight:700; font-size:12.5px; margin-bottom:6px;">${m.logo} ${m.label}</div>
+        <label style="font-size:10.5px; color:#8b8a82;">${fieldLabel}</label>
+        <input type="text" value="${md[fieldKey]}" oninput="adminEditMerchant('${m.id}','${fieldKey}',this.value)">
+      </div>`;
+    }).join('')}
+  `;
+}
+function adminEditMerchant(methodId, field, val){ merchantDetails[methodId][field] = val; adminSaved(); }
+
+/* --- Hotel Info --- */
+function renderAdminHotel(){
+  document.getElementById('pane-hotel').innerHTML = `
+    <div class="admin-section-title">Hotel story & contact</div>
+    <div class="admin-field"><label>Subtitle</label><input type="text" value="${hotelInfo.sub}" oninput="hotelInfo.sub=this.value; adminSaved();"></div>
+    <div class="admin-field"><label>History</label><textarea oninput="hotelInfo.p1=this.value; adminSaved();">${hotelInfo.p1}</textarea></div>
+    <div class="admin-field"><label>Kitchen / philosophy</label><textarea oninput="hotelInfo.p2=this.value; adminSaved();">${hotelInfo.p2}</textarea></div>
+    <div class="admin-field"><label>Contact info</label><textarea oninput="hotelInfo.p3=this.value; adminSaved();">${hotelInfo.p3}</textarea></div>
+  `;
+}
+
+/* --- Security --- */
+function renderAdminSecurity(){
+  document.getElementById('pane-security').innerHTML = `
+    <div class="admin-section-title">Change PIN</div>
+    <div class="admin-field"><label>Current PIN</label><input type="text" id="secCurrentPin" maxlength="6" inputmode="numeric"></div>
+    <div class="admin-field"><label>New 6-digit PIN</label><input type="text" id="secNewPin" maxlength="6" inputmode="numeric"></div>
+    <div class="admin-field"><label>Confirm new PIN</label><input type="text" id="secNewPin2" maxlength="6" inputmode="numeric"></div>
+    <div class="pin-error" id="secPinMsg"></div>
+    <button class="admin-mini-btn primary" style="width:100%; padding:10px;" onclick="adminChangePin()">Update PIN</button>
+
+    <div class="admin-section-title" style="margin-top:22px;">Recovery security question</div>
+    <div class="admin-field"><label>Question</label><input type="text" id="secQInput" value="${securityQ}"></div>
+    <div class="admin-field"><label>Answer</label><input type="text" id="secAInput" value="${securityA}"></div>
+    <button class="admin-mini-btn primary" style="width:100%; padding:10px;" onclick="adminSaveRecovery()">Save recovery question</button>
+  `;
+}
+function adminChangePin(){
+  const cur = document.getElementById('secCurrentPin').value.trim();
+  const n1 = document.getElementById('secNewPin').value.trim();
+  const n2 = document.getElementById('secNewPin2').value.trim();
+  const msg = document.getElementById('secPinMsg');
+  if(cur !== staffPin){
+    msg.textContent = "That's not the current PIN — enter the PIN you use right now to unlock Staff/Admin, then set your new one.";
+    document.getElementById('secCurrentPin').value = "";
+    return;
+  }
+  if(!/^\d{6}$/.test(n1)){ msg.textContent = "New PIN must be exactly 6 digits."; return; }
+  if(n1 !== n2){ msg.textContent = "New PINs don't match — re-enter both."; document.getElementById('secNewPin').value=""; document.getElementById('secNewPin2').value=""; return; }
+  staffPin = n1;
+  msg.textContent = "";
+  document.getElementById('secCurrentPin').value = "";
+  document.getElementById('secNewPin').value = "";
+  document.getElementById('secNewPin2').value = "";
+  adminSaved();
+  showToast("PIN updated — use it next time you unlock Staff/Admin");
+}
+function adminSaveRecovery(){
+  securityQ = document.getElementById('secQInput').value.trim() || securityQ;
+  securityA = document.getElementById('secAInput').value.trim() || securityA;
+  adminSaved();
+  showToast("Recovery question saved");
+}
+
+document.getElementById('langToggle').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  lang = btn.dataset.lang;
+  [...document.getElementById('langToggle').children].forEach(b=>b.classList.toggle('active', b===btn));
+  render();
+});
+
+document.getElementById('currToggle').addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  currency = btn.dataset.curr;
+  [...document.getElementById('currToggle').children].forEach(b=>b.classList.toggle('active', b===btn));
+  render();
+  if(document.getElementById('adminOverlay').classList.contains('show')) renderAdminMenu();
+});
+
+render();
+</script>
 </body>
 </html>
